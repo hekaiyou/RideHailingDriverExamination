@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长沙市网络预约出租车驾驶员培训系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* 登录页面样式 */
+        .login-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .password-hint {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #5a6fd8;
+        }
+
+        /* 主页面样式 */
+        .main-page {
+            display: none;
+        }
+
+        .header {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 18px;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-item {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab-item.active {
+            color: #667eea;
+            background: white;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tab-content {
+            padding: 20px;
+            min-height: calc(100vh - 120px);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* 课程页面样式 */
+        .course-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .course-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .course-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-size: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .course-image.emoji {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 48px;
+        }
+
+        .course-title {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* 学习页面样式 */
+        .study-page {
+            display: none;
+        }
+
+        .study-modules {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .module-item {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .module-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* 练习页面样式 */
+        .practice-page, .exam-page, .wrong-page {
+            display: none;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .question-type {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            margin-bottom: 10px;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .option.wrong {
+            border-color: #e74c3c;
+            background: #fdf2f2;
+            color: #e74c3c;
+        }
+
+        .option.correct::before {
+            content: '✓ ';
+            font-weight: bold;
+        }
+
+        .option.wrong::before {
+            content: '✗ ';
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        /* 考试规则页面 */
+        .exam-rules {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .exam-rules h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .rules-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .rules-list li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .start-exam-btn {
+            background: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .start-exam-btn:hover {
+            background: #229954;
+        }
+
+        /* 个人中心样式 */
+        .profile-info {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .profile-value {
+            color: #666;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-content h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .question-selector {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .question-selector::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-selector::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .question-selector::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        .question-selector::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+
+        .question-num {
+            padding: 12px 8px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .question-num:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .question-num.answered {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .question-num.current {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .question-num.wrong {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .question-selector {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 登录页面 -->
+        <div id="loginPage" class="login-page">
+            <div class="login-header">
+                <h1>长沙市网络预约出租车驾驶员培训系统</h1>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="idCard">身份证号</label>
+                    <input type="text" id="idCard" placeholder="请输入身份证号">
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="请输入密码">
+                    <div class="password-hint">密码默认身份证号后六位</div>
+                </div>
+                <button class="login-btn" onclick="login()">确认</button>
+            </div>
+        </div>
+
+        <!-- 主页面 -->
+        <div id="mainPage" class="main-page">
+            <div class="header">
+                <h1>长沙市网络预约出租车驾驶员培训系统</h1>
+            </div>
+            
+            <div class="tab-nav">
+                <button class="tab-item active" onclick="showTab('courses')">我的课程</button>
+                <button class="tab-item" onclick="showTab('profile')">个人中心</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- 我的课程 -->
+                <div id="coursesTab" class="tab-pane active">
+                    <div class="course-item" onclick="enterCourse('regional')">
+                        <div class="course-image">🚗</div>
+                        <div class="course-title">长沙市网络预约出租车驾驶员<span style="color: red;">区域科目</span>从业资格培训</div>
+                    </div>
+                    <div class="course-item" onclick="enterCourse('public')">
+                        <div class="course-image">🚕</div>
+                        <div class="course-title">长沙市网络预约出租车驾驶员<span style="color: red;">公共科目</span>从业资格培训</div>
+                    </div>
+                </div>
+
+                <!-- 个人中心 -->
+                <div id="profileTab" class="tab-pane">
+                    <div class="profile-info">
+                        <div class="profile-item">
+                            <span class="profile-label">姓名</span>
+                            <span class="profile-value" id="userName">张三</span>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-label">身份证号</span>
+                            <span class="profile-value" id="userIdCard"></span>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-label">从业类型</span>
+                            <span class="profile-value">网络预约出租汽车驾驶员</span>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">退出登录</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课程学习页面 -->
+        <div id="studyPage" class="study-page">
+            <button class="back-btn" onclick="backToMain()">←</button>
+            <div class="header">
+                <h1 id="courseTitle">课程学习</h1>
+            </div>
+            <div class="tab-content">
+                <div class="study-modules">
+                    <div class="module-item" onclick="startPractice()">
+                        <div class="module-icon">📝</div>
+                        <h3>顺序练习</h3>
+                    </div>
+                    <div class="module-item" onclick="showExamRules()">
+                        <div class="module-icon">📋</div>
+                        <h3>模拟考试</h3>
+                    </div>
+                    <div class="module-item" onclick="showWrongQuestions()">
+                        <div class="module-icon">❌</div>
+                        <h3>我的错题</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 考试规则页面 -->
+        <div id="examRulesPage" class="exam-page">
+            <button class="back-btn" onclick="backToStudy()">←</button>
+            <div class="tab-content">
+                <div class="exam-rules">
+                    <h2>模拟考试规则</h2>
+                    <ol class="rules-list">
+                        <li>考试科目：长沙市网络预约出租车驾驶员区域科目从业资格培训模拟考试</li>
+                        <li>试题数量：50题</li>
+                        <li>考试时间：60分钟</li>
+                        <li>通过标准：满分50分，40分通过</li>
+                    </ol>
+                    <button class="start-exam-btn" onclick="startExam()">开始模拟考试</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顺序练习页面 -->
+        <div id="practicePage" class="practice-page">
+            <button class="back-btn" onclick="backToStudy()">←</button>
+            <div class="question-container">
+                <div class="question-header">
+                    <span class="question-number" id="practiceQuestionNum">第1题/共500题</span>
+                    <span class="question-type" id="practiceQuestionType">单选题</span>
+                </div>
+                <div class="question-text" id="practiceQuestionText"></div>
+                <ul class="options" id="practiceOptions"></ul>
+            </div>
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="previousQuestion('practice')">上一题</button>
+                <button class="btn btn-danger" onclick="endPractice()">结束练习</button>
+                <button class="btn btn-primary" onclick="nextQuestion('practice')">下一题</button>
+                <button class="btn btn-secondary" onclick="showQuestionSelector('practice')">选题</button>
+                <button class="btn btn-secondary" onclick="redoQuestion('practice')">重做</button>
+            </div>
+        </div>
+
+        <!-- 模拟考试页面 -->
+        <div id="examPage" class="exam-page">
+            <button class="back-btn" onclick="backToStudy()">←</button>
+            <div class="question-container">
+                <div class="question-header">
+                    <span class="question-number" id="examQuestionNum">第1题/共50题</span>
+                    <span class="question-type" id="examQuestionType">单选题</span>
+                </div>
+                <div class="question-text" id="examQuestionText"></div>
+                <ul class="options" id="examOptions"></ul>
+            </div>
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="previousQuestion('exam')">上一题</button>
+                <button class="btn btn-primary" onclick="nextQuestion('exam')">下一题</button>
+                <button class="btn btn-secondary" onclick="showQuestionSelector('exam')">选题</button>
+                <div class="timer" id="examTimer">60:00</div>
+                <button class="btn btn-danger" onclick="submitExam()">交卷</button>
+            </div>
+        </div>
+
+        <!-- 我的错题页面 -->
+        <div id="wrongPage" class="wrong-page">
+            <button class="back-btn" onclick="backToStudy()">←</button>
+            <div class="question-container">
+                <div class="question-header">
+                    <span class="question-number" id="wrongQuestionNum">第1题/共0题</span>
+                    <span class="question-type" id="wrongQuestionType">单选题</span>
+                </div>
+                <div class="question-text" id="wrongQuestionText">暂无错题</div>
+                <ul class="options" id="wrongOptions"></ul>
+            </div>
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="previousQuestion('wrong')">上一题</button>
+                <button class="btn btn-primary" onclick="nextQuestion('wrong')">下一题</button>
+                <button class="btn btn-secondary" onclick="showQuestionSelector('wrong')">选题</button>
+                <button class="btn btn-secondary" onclick="redoQuestion('wrong')">重做</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选题弹窗 -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <h3>选择题目</h3>
+            <div class="question-selector" id="questionSelector"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="closeModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认弹窗 -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirmTitle">确认</h3>
+            <p id="confirmMessage"></p>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="closeModal()" style="margin-right: 10px;">取消</button>
+                <button class="btn btn-primary" id="confirmBtn">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成绩弹窗 -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h3>考试成绩</h3>
+            <div id="examResult"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="closeModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentUser = null;
+        let currentCourse = null;
+        let currentMode = null; // 'practice', 'exam', 'wrong'
+        let currentQuestionIndex = 0;
+        let questions = [];
+        let userAnswers = [];
+        let wrongQuestions = JSON.parse(localStorage.getItem('wrongQuestions') || '[]');
+        let examTimer = null;
+        let examTimeLeft = 3600; // 60分钟
+
+        // 模拟学员数据
+        const students = [
+            { idCard: '430102199001011234', name: '张三' },
+            { idCard: '430102199002021234', name: '李四' },
+            { idCard: '430102199003031234', name: '王五' }
+        ];
+
+        // 题库数据
+        const questionBank = {
+            practice: generateQuestions(500),
+            exam: generateQuestions(50)
+        };
+
+        // 生成题目
+        function generateQuestions(count) {
+            const questions = [];
+            const questionTypes = ['单选题', '判断题'];
+            
+            for (let i = 0; i < count; i++) {
+                const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+                let question;
+                
+                if (type === '单选题') {
+                    question = {
+                        id: i + 1,
+                        type: type,
+                        text: `关于网络预约出租车驾驶员的相关规定，以下哪项是正确的？`,                        options: [
+                            'A：需要取得相应的从业资格证',
+                            'B：不需要任何证件',
+                            'C：只需要驾驶证',
+                            'D：只需要身份证'
+                        ],
+                        correctAnswer: 0
+                    };
+                } else {
+                    question = {
+                        id: i + 1,
+                        type: type,
+                        text: `网络预约出租车驾驶员必须取得从业资格证才能从事相关工作。`,
+                        options: [
+                            '正确',
+                            '错误'
+                        ],
+                        correctAnswer: 0
+                    };
+                }
+                
+                questions.push(question);
+            }
+            
+            return questions;
+        }
+
+        // 登录功能
+        function login() {
+            const idCard = document.getElementById('idCard').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!idCard || !password) {
+                alert('请输入身份证号和密码');
+                return;
+            }
+            
+            // 验证身份证号格式
+            if (!/^\d{18}$/.test(idCard)) {
+                alert('请输入正确的18位身份证号');
+                return;
+            }
+            
+            // 查找学员
+            const student = students.find(s => s.idCard === idCard);
+            if (!student) {
+                alert('身份证号不存在，请联系管理员');
+                return;
+            }
+            
+            // 验证密码（身份证号后6位）
+            const expectedPassword = idCard.slice(-6);
+            if (password !== expectedPassword) {
+                alert('密码错误，密码为身份证号后六位');
+                return;
+            }
+            
+            // 登录成功
+            currentUser = student;
+            document.getElementById('userIdCard').textContent = idCard;
+            document.getElementById('userName').textContent = student.name;
+            
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+        }
+
+        // 退出登录
+        function logout() {
+            currentUser = null;
+            currentCourse = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('studyPage').style.display = 'none';
+            document.getElementById('practicePage').style.display = 'none';
+            document.getElementById('examPage').style.display = 'none';
+            document.getElementById('examRulesPage').style.display = 'none';
+            document.getElementById('wrongPage').style.display = 'none';
+            
+            // 清空登录表单
+            document.getElementById('idCard').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // 切换标签页
+        function showTab(tabName) {
+            // 移除所有active类
+            document.querySelectorAll('.tab-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // 添加active类
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // 进入课程
+        function enterCourse(courseType) {
+            currentCourse = courseType;
+            const titles = {
+                regional: '长沙市网络预约出租车驾驶员区域科目从业资格培训',
+                public: '长沙市网络预约出租车驾驶员公共科目从业资格培训'
+            };
+            
+            document.getElementById('courseTitle').textContent = titles[courseType];
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('studyPage').style.display = 'block';
+        }
+
+        // 返回主页
+        function backToMain() {
+            document.getElementById('studyPage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+        }
+
+        // 返回学习页
+        function backToStudy() {
+            document.getElementById('practicePage').style.display = 'none';
+            document.getElementById('examPage').style.display = 'none';
+            document.getElementById('examRulesPage').style.display = 'none';
+            document.getElementById('wrongPage').style.display = 'none';
+            document.getElementById('studyPage').style.display = 'block';
+            
+            // 清除考试计时器
+            if (examTimer) {
+                clearInterval(examTimer);
+                examTimer = null;
+            }
+        }
+
+        // 开始顺序练习
+        function startPractice() {
+            currentMode = 'practice';
+            questions = [...questionBank.practice];
+            userAnswers = new Array(questions.length).fill(null);
+            currentQuestionIndex = 0;
+            
+            document.getElementById('studyPage').style.display = 'none';
+            document.getElementById('practicePage').style.display = 'block';
+            
+            showQuestion('practice');
+        }
+
+        // 显示考试规则
+        function showExamRules() {
+            document.getElementById('studyPage').style.display = 'none';
+            document.getElementById('examRulesPage').style.display = 'block';
+        }
+
+        // 开始模拟考试
+        function startExam() {
+            currentMode = 'exam';
+            questions = [...questionBank.exam];
+            userAnswers = new Array(questions.length).fill(null);
+            currentQuestionIndex = 0;
+            examTimeLeft = 3600; // 重置时间
+            
+            document.getElementById('examRulesPage').style.display = 'none';
+            document.getElementById('examPage').style.display = 'block';
+            
+            showQuestion('exam');
+            startExamTimer();
+        }
+
+        // 开始考试计时器
+        function startExamTimer() {
+            examTimer = setInterval(() => {
+                examTimeLeft--;
+                const minutes = Math.floor(examTimeLeft / 60);
+                const seconds = examTimeLeft % 60;
+                document.getElementById('examTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (examTimeLeft <= 0) {
+                    clearInterval(examTimer);
+                    submitExam(true); // 自动提交
+                }
+            }, 1000);
+        }
+
+        // 显示错题
+        function showWrongQuestions() {
+            if (wrongQuestions.length === 0) {
+                alert('暂无错题');
+                return;
+            }
+            
+            currentMode = 'wrong';
+            questions = [...wrongQuestions];
+            userAnswers = new Array(questions.length).fill(null);
+            currentQuestionIndex = 0;
+            
+            document.getElementById('studyPage').style.display = 'none';
+            document.getElementById('wrongPage').style.display = 'block';
+            
+            showQuestion('wrong');
+        }
+
+        // 显示题目
+        function showQuestion(mode) {
+            if (questions.length === 0) return;
+            
+            const question = questions[currentQuestionIndex];
+            const prefix = mode === 'practice' ? 'practice' : mode === 'exam' ? 'exam' : 'wrong';
+            
+            document.getElementById(prefix + 'QuestionNum').textContent = 
+                `第${currentQuestionIndex + 1}题/共${questions.length}题`;
+            document.getElementById(prefix + 'QuestionType').textContent = question.type;
+            document.getElementById(prefix + 'QuestionText').textContent = question.text;
+            
+            const optionsContainer = document.getElementById(prefix + 'Options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const li = document.createElement('li');
+                li.className = 'option';
+                li.textContent = option;
+                li.onclick = () => selectOption(mode, index);
+                
+                // 如果已经回答过，显示之前的选择
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    if (index === userAnswers[currentQuestionIndex]) {
+                        li.classList.add('selected');
+                    }
+                }
+                
+                optionsContainer.appendChild(li);
+            });
+        }
+
+        // 选择选项
+        function selectOption(mode, optionIndex) {
+            const question = questions[currentQuestionIndex];
+            const prefix = mode === 'practice' ? 'practice' : mode === 'exam' ? 'exam' : 'wrong';
+            const optionsContainer = document.getElementById(prefix + 'Options');
+            
+            // 清除之前的选择
+            optionsContainer.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'wrong');
+            });
+            
+            // 记录答案
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // 显示选择
+            const selectedOption = optionsContainer.children[optionIndex];
+            selectedOption.classList.add('selected');
+            
+            // 检查答案
+            const isCorrect = optionIndex === question.correctAnswer;
+            
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+                // 答对了，自动进入下一题（延迟一下让用户看到结果）
+                setTimeout(() => {
+                    if (mode === 'wrong') {
+                        // 错题答对了，从错题集中移除
+                        removeFromWrongQuestions(question.id);
+                        questions.splice(currentQuestionIndex, 1);
+                        userAnswers.splice(currentQuestionIndex, 1);
+                        
+                        if (questions.length === 0) {
+                            alert('恭喜！所有错题都已完成！');
+                            backToStudy();
+                            return;
+                        }
+                        
+                        if (currentQuestionIndex >= questions.length) {
+                            currentQuestionIndex = questions.length - 1;
+                        }
+                    } else {
+                        if (currentQuestionIndex < questions.length - 1) {
+                            currentQuestionIndex++;
+                        }
+                    }
+                    showQuestion(mode);
+                }, 1000);
+            } else {
+                // 答错了，显示正确答案
+                selectedOption.classList.add('wrong');
+                const correctOption = optionsContainer.children[question.correctAnswer];
+                correctOption.classList.add('correct');
+                
+                // 添加到错题集
+                addToWrongQuestions(question);
+            }
+        }
+
+        // 添加到错题集
+        function addToWrongQuestions(question) {
+            const exists = wrongQuestions.find(q => q.id === question.id);
+            if (!exists) {
+                wrongQuestions.push(question);
+                localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
+            }
+        }
+
+        // 从错题集移除
+        function removeFromWrongQuestions(questionId) {
+            wrongQuestions = wrongQuestions.filter(q => q.id !== questionId);
+            localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
+        }
+
+        // 上一题
+        function previousQuestion(mode) {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(mode);
+            }
+        }
+
+        // 下一题
+        function nextQuestion(mode) {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(mode);
+            }
+        }
+
+        // 重做题目
+        function redoQuestion(mode) {
+            userAnswers[currentQuestionIndex] = null;
+            showQuestion(mode);
+        }
+
+        // 结束练习
+        function endPractice() {
+            showConfirm('确认结束练习？', () => {
+                backToStudy();
+            });
+        }
+
+        // 提交考试
+        function submitExam(autoSubmit = false) {
+            const unansweredCount = userAnswers.filter(answer => answer === null).length;
+            
+            if (!autoSubmit && unansweredCount > 0) {
+                showConfirm(`还有${unansweredCount}道未完成题目，确定提交吗？`, () => {
+                    calculateExamResult();
+                });
+            } else {
+                calculateExamResult();
+            }
+        }
+
+        // 计算考试成绩
+        function calculateExamResult() {
+            if (examTimer) {
+                clearInterval(examTimer);
+                examTimer = null;
+            }
+            
+            let correctCount = 0;
+            questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correctAnswer) {
+                    correctCount++;
+                }
+            });
+            
+            const score = correctCount;
+            const passed = score >= 40;
+            
+            const resultHtml = `
+                <div style="text-align: center;">
+                    <h2 style="color: ${passed ? '#27ae60' : '#e74c3c'}">
+                        ${passed ? '考试通过' : '考试未通过'}
+                    </h2>
+                    <p style="font-size: 24px; margin: 20px 0;">
+                        得分：<strong>${score}</strong>/50
+                    </p>
+                    <p>正确题数：${correctCount}</p>
+                    <p>错误题数：${questions.length - correctCount}</p>
+                    <p>通过标准：40分</p>
+                </div>
+            `;
+            
+            document.getElementById('examResult').innerHTML = resultHtml;
+            document.getElementById('resultModal').style.display = 'block';
+        }
+
+        // 显示选题弹窗
+        function showQuestionSelector(mode) {
+            const selector = document.getElementById('questionSelector');
+            selector.innerHTML = '';
+            
+            questions.forEach((question, index) => {
+                const div = document.createElement('div');
+                div.className = 'question-num';
+                div.textContent = index + 1;
+                
+                if (index === currentQuestionIndex) {
+                    div.classList.add('current');
+                } else if (userAnswers[index] !== null) {
+                    div.classList.add('answered');
+                }
+                
+                div.onclick = () => {
+                    currentQuestionIndex = index;
+                    showQuestion(mode);
+                    closeModal();
+                };
+                
+                selector.appendChild(div);
+            });
+            
+            document.getElementById('questionModal').style.display = 'block';
+        }
+
+        // 显示确认弹窗
+        function showConfirm(message, callback) {
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmBtn').onclick = () => {
+                callback();
+                closeModal();
+            };
+            document.getElementById('confirmModal').style.display = 'block';
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // 点击弹窗外部关闭
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            };
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 页面加载完成后的初始化代码
+        });
+    </script>
+</body>
+</html>
