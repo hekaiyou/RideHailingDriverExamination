@@ -13,5 +13,14 @@
 
 ```shell
 % cd ride_hailing_driver_examination
+% python3 manage.py createsuperuser
+% 用户名: admin
+% 电子邮件地址: admin@example.com
+% Password: **********
+% Password (again): *********
+```
+
+```shell
+% cd ride_hailing_driver_examination
 % python3 manage.py runserver
 ```
