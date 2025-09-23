@@ -1,18 +1,22 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from .models import Student
 
 def login_view(request):
     if request.method == 'POST':
         id_card = request.POST['id_card']
         password = request.POST['password']
-        # 判断用户名和密码
-        user = authenticate(request, username=id_card, password=password)
-        if user is not None:
-            login(request, user)
-            # 登录成功后重定向至主页
+        # 验证身份证是否存在
+        try:
+            student = Student.objects.get(id_card=id_card)
+        except Student.DoesNotExist:
+            messages.error(request, '身份证号不存在')
+            return render(request, 'login.html')
+        # 验证密码
+        if student.password == password:
+            # 登录成功的逻辑, 使用 Django 的会话管理, 将学员ID存储在会话中
+            request.session['student_id'] = student.id
+            # 登录成功后重定向
             return redirect('home')
-        else:
-            messages.error(request, '身份证号或密码错误')
-    # 渲染登录页面
+        messages.error(request, '密码错误')
     return render(request, 'login.html')
