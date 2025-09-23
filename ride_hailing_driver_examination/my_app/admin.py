@@ -4,8 +4,8 @@ from .models import Student, Course, Question
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('id_card', 'profession_type',)
-    search_fields = ('id_card',)
+    list_display = ('name', 'id_card', 'profession_type',)
+    search_fields = ('name', 'id_card',)
 
 
 @admin.register(Course)
