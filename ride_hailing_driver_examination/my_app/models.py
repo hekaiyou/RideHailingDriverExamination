@@ -45,3 +45,22 @@ class Course(models.Model):
     class Meta:
         verbose_name = "课程"
         verbose_name_plural = "课程"
+
+
+class Question(models.Model):
+ 
+    class QuestionType(models.TextChoices):
+        SINGLE_CHOICE = 'SingleChoice', '单选题'
+        MULTIPLE_CHOICE = 'MultipleChoice', '多选题'
+        TRUE_FALSE = 'TrueFalse', '判断题'
+ 
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='questions', verbose_name='课程')
+    text = models.TextField(verbose_name='题目描述')
+    question_type = models.CharField(max_length=20, choices=QuestionType.choices, verbose_name='题目类型')
+ 
+    def __str__(self):
+        return self.text
+ 
+    class Meta:
+        verbose_name = "题目"
+        verbose_name_plural = "题目"
