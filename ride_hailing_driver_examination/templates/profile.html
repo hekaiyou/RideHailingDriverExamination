@@ -6,6 +6,15 @@
   <title>个人中心 - 网络预约出租车驾驶员培训系统</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    /* 添加一个新的类来强制按钮显示为块元素 */
+    .logout-btn {
+      /* 将 a 标签设置为块级元素 */
+      display: block;
+      /* 确保其宽度占据100% */
+      width: 100%;
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
   <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
@@ -27,7 +36,7 @@
       </div>
 
       <!-- 个人中心 -->
-      <div class="content p-5">
+      <div class="tab-pane p-5">
         <div class="profile-info bg-white rounded-xl p-6 shadow-md mb-4">
           <div class="profile-item flex justify-between py-3 border-b border-gray-100">
             <span class="profile-label font-semibold text-gray-800">姓名</span>
@@ -39,10 +48,12 @@
           </div>
           <div class="profile-item flex justify-between py-3">
             <span class="profile-label font-semibold text-gray-800">从业类型</span>
-            <span class="profile-value text-gray-600">{{ student.profession_type }}</span>
+            <span class="profile-value text-gray-600">{{ student.get_profession_type_display }}</span>
           </div>
         </div>
-        <a href="{% url 'logout' %}" class="logout-btn w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="">退出登录</a>
+        <div class="w-full">
+          <a href="{% url 'logout' %}" class="logout-btn py-3 bg-red-500 hover:bg-red-600 text-white rounded-md flex items-center justify-center" onclick="">退出登录</a>
+        </div>
       </div>
 
     </div>

@@ -21,6 +21,9 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
+    def get_profession_type_display(self):
+        return self.ProfessionType(self.profession_type).label
+
     class Meta:
         verbose_name = "学员"
         verbose_name_plural = "学员"
