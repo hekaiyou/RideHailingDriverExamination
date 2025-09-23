@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>长沙市网络预约出租车驾驶员培训系统</title>
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
+  <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-page flex items-center justify-center min-h-screen p-6">
+      <div class="w-full">
+        <div class="login-header text-center mb-8">
+          <h1 class="text-gray-800 text-2xl font-semibold">长沙市网络预约出租车驾驶员培训系统</h1>
+        </div>
+        <div class="login-form mx-auto w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+          <div class="form-group mb-6">
+            <label for="idCard" class="block text-sm font-medium text-gray-700 mb-2">身份证号</label>
+            <input type="text" id="idCard" placeholder="请输入身份证号"
+                   class="w-full p-3 border-2 border-gray-200 rounded-md text-base focus:outline-none focus:border-indigo-500" />
+          </div>
+          <div class="form-group mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+            <input type="password" id="password" placeholder="请输入密码"
+                   class="w-full p-3 border-2 border-gray-200 rounded-md text-base focus:outline-none focus:border-indigo-500" />
+            <div class="password-hint text-red-500 text-xs mt-2">密码默认身份证号后六位</div>
+          </div>
+          <button class="login-btn w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-base font-medium"
+                  onclick="login()">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主页面 -->
+    <div id="mainPage" class="main-page" style="display:none;">
+      <div class="header bg-indigo-600 text-white p-4 text-center">
+        <h1 class="text-lg font-semibold">长沙市网络预约出租车驾驶员培训系统</h1>
+      </div>
+
+      <div class="tab-nav flex bg-gray-100 border-b border-gray-200">
+        <button onclick="showTab('courses','thisBtn1')" data-name="courses"
+                class="tab-item tab-btn-1 flex-1 py-3 text-center cursor-pointer text-indigo-600 bg-white border-b-2 border-indigo-600 font-semibold">
+          我的课程
+        </button>
+        <button onclick="showTab('profile', 'thisBtn2')" data-name="profile"
+                class="tab-item tab-btn-2 flex-1 py-3 text-center cursor-pointer text-gray-600">
+          个人中心
+        </button>
+      </div>
+
+      <div class="tab-content p-5 min-h-[calc(100vh-120px)]">
+        <!-- 我的课程 -->
+        <div id="coursesTab" class="tab-pane block">
+          <div class="space-y-4">
+            <div class="course-item flex items-center p-5 bg-white rounded-xl shadow-md cursor-pointer transform hover:-translate-y-1 transition"
+                 onclick="enterCourse('regional')">
+              <div class="course-image flex-shrink-0 w-28 h-28 rounded-xl mr-5 flex items-center justify-center text-4xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg">🚗</div>
+              <div class="course-title flex-1 text-gray-800 text-base leading-relaxed">
+                长沙市网络预约出租车驾驶员<span class="text-red-500">区域科目</span>从业资格培训
+              </div>
+            </div>
+
+            <div class="course-item flex items-center p-5 bg-white rounded-xl shadow-md cursor-pointer transform hover:-translate-y-1 transition"
+                 onclick="enterCourse('public')">
+              <div class="course-image flex-shrink-0 w-28 h-28 rounded-xl mr-5 flex items-center justify-center text-4xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg">🚕</div>
+              <div class="course-title flex-1 text-gray-800 text-base leading-relaxed">
+                长沙市网络预约出租车驾驶员<span class="text-red-500">公共科目</span>从业资格培训
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 个人中心 -->
+        <div id="profileTab" class="tab-pane hidden">
+          <div class="profile-info bg-white rounded-xl p-6 shadow-md mb-4">
+            <div class="profile-item flex justify-between py-3 border-b border-gray-100">
+              <span class="profile-label font-semibold text-gray-800">姓名</span>
+              <span class="profile-value text-gray-600" id="userName">张三</span>
+            </div>
+            <div class="profile-item flex justify-between py-3 border-b border-gray-100">
+              <span class="profile-label font-semibold text-gray-800">身份证号</span>
+              <span class="profile-value text-gray-600" id="userIdCard"></span>
+            </div>
+            <div class="profile-item flex justify-between py-3">
+              <span class="profile-label font-semibold text-gray-800">从业类型</span>
+              <span class="profile-value text-gray-600">网络预约出租汽车驾驶员</span>
+            </div>
+          </div>
+          <button class="logout-btn w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="logout()">退出登录</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 课程学习页面 -->
+    <div id="studyPage" class="study-page" style="display:none;">
+      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
+              onclick="backToMain()">←</button>
+
+      <div class="header bg-indigo-600 text-white p-4 text-center">
+        <h1 id="courseTitle" class="text-lg font-semibold">课程学习</h1>
+      </div>
+
+      <div class="tab-content p-5">
+        <div class="study-modules grid grid-cols-1 gap-4">
+          <div class="module-item bg-white rounded-xl p-6 shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition"
+               onclick="startPractice()">
+            <div class="module-icon w-14 h-14 bg-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-xl mb-4">📝</div>
+            <h3 class="text-gray-800 font-medium">顺序练习</h3>
+          </div>
+
+          <div class="module-item bg-white rounded-xl p-6 shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition"
+               onclick="showExamRules()">
+            <div class="module-icon w-14 h-14 bg-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-xl mb-4">📋</div>
+            <h3 class="text-gray-800 font-medium">模拟考试</h3>
+          </div>
+
+          <div class="module-item bg-white rounded-xl p-6 shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition"
+               onclick="showWrongQuestions()">
+            <div class="module-icon w-14 h-14 bg-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-xl mb-4">❌</div>
+            <h3 class="text-gray-800 font-medium">我的错题</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 考试规则页面 -->
+    <div id="examRulesPage" class="exam-page" style="display:none;">
+      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
+              onclick="backToStudy()">←</button>
+
+      <div class="tab-content p-5">
+        <div class="exam-rules bg-white rounded-xl p-8 shadow-md text-center">
+          <h2 class="text-gray-800 text-xl font-semibold mb-4">模拟考试规则</h2>
+          <ol class="rules-list text-left space-y-3 mb-4">
+            <li class="bg-gray-50 p-3 rounded-md">考试科目：长沙市网络预约出租车驾驶员区域科目从业资格培训模拟考试</li>
+            <li class="bg-gray-50 p-3 rounded-md">试题数量：50题</li>
+            <li class="bg-gray-50 p-3 rounded-md">考试时间：60分钟</li>
+            <li class="bg-gray-50 p-3 rounded-md">通过标准：满分50分，40分通过</li>
+          </ol>
+          <button class="start-exam-btn mt-3 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md" onclick="startExam()">开始模拟考试</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 顺序练习页面 -->
+    <div id="practicePage" class="practice-page" style="display:none;">
+      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
+              onclick="backToStudy()">←</button>
+
+      <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
+        <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+          <span class="question-number text-indigo-600 font-semibold" id="practiceQuestionNum">第1题/共500题</span>
+          <span class="question-type bg-indigo-600 text-white px-3 py-1 rounded-full text-xs" id="practiceQuestionType">单选题</span>
+        </div>
+        <div class="question-text text-gray-800 text-base leading-relaxed mb-4" id="practiceQuestionText"></div>
+        <ul class="options space-y-3" id="practiceOptions"></ul>
+      </div>
+
+      <div class="controls flex flex-wrap gap-3 justify-between items-center p-5 m-5 bg-white rounded-xl shadow-md">
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="previousQuestion('practice')">上一题</button>
+        <button class="btn btn-danger px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="endPractice()">结束练习</button>
+        <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="nextQuestion('practice')">下一题</button>
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="showQuestionSelector('practice')">选题</button>
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="redoQuestion('practice')">重做</button>
+      </div>
+    </div>
+
+    <!-- 模拟考试页面 -->
+    <div id="examPage" class="exam-page" style="display:none;">
+      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
+              onclick="backToStudy()">←</button>
+
+      <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
+        <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+          <span class="question-number text-indigo-600 font-semibold" id="examQuestionNum">第1题/共50题</span>
+          <span class="question-type bg-indigo-600 text-white px-3 py-1 rounded-full text-xs" id="examQuestionType">单选题</span>
+        </div>
+        <div class="question-text text-gray-800 text-base leading-relaxed mb-4" id="examQuestionText"></div>
+        <ul class="options space-y-3" id="examOptions"></ul>
+      </div>
+
+      <div class="controls flex flex-wrap gap-3 justify-between items-center p-5 m-5 bg-white rounded-xl shadow-md">
+        <div class="flex gap-2">
+          <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="previousQuestion('exam')">上一题</button>
+          <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="nextQuestion('exam')">下一题</button>
+          <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="showQuestionSelector('exam')">选题</button>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="timer text-red-600 font-semibold" id="examTimer">60:00</div>
+          <button class="btn btn-danger px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="submitExam()">交卷</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 我的错题页面 -->
+    <div id="wrongPage" class="wrong-page" style="display:none;">
+      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
+              onclick="backToStudy()">←</button>
+
+      <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
+        <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+          <span class="question-number text-indigo-600 font-semibold" id="wrongQuestionNum">第1题/共0题</span>
+          <span class="question-type bg-indigo-600 text-white px-3 py-1 rounded-full text-xs" id="wrongQuestionType">单选题</span>
+        </div>
+        <div class="question-text text-gray-600 text-base leading-relaxed mb-4" id="wrongQuestionText">暂无错题</div>
+        <ul class="options space-y-3" id="wrongOptions"></ul>
+      </div>
+
+      <div class="controls flex flex-wrap gap-3 justify-between items-center p-5 m-5 bg-white rounded-xl shadow-md">
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="previousQuestion('wrong')">上一题</button>
+        <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="nextQuestion('wrong')">下一题</button>
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="showQuestionSelector('wrong')">选题</button>
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="redoQuestion('wrong')">重做</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选题弹窗 -->
+  <div id="questionModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center" style="display:none;">
+    <div class="modal-content bg-white rounded-xl p-6 max-w-2xl w-11/12 max-h-[80vh] overflow-hidden shadow-2xl">
+      <h3 class="text-center text-lg font-semibold text-gray-800">选择题目</h3>
+      <div id="questionSelector" class="question-selector grid grid-cols-10 gap-2 mt-4 p-2 bg-gray-50 rounded-md overflow-y-auto" style="max-height:50vh;"></div>
+      <div class="text-center mt-4">
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="closeModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 确认弹窗 -->
+  <div id="confirmModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center" style="display:none;">
+    <div class="modal-content bg-white rounded-xl p-6 max-w-lg w-11/12 shadow-2xl">
+      <h3 id="confirmTitle" class="text-center text-lg font-semibold text-gray-800">确认</h3>
+      <p id="confirmMessage" class="text-center text-gray-700 mt-3"></p>
+      <div class="text-center mt-6">
+        <button class="btn btn-secondary px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md mr-3" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" id="confirmBtn">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成绩弹窗 -->
+  <div id="resultModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center" style="display:none;">
+    <div class="modal-content bg-white rounded-xl p-6 max-w-lg w-11/12 shadow-2xl">
+      <h3 class="text-center text-lg font-semibold text-gray-800">考试成绩</h3>
+      <div id="examResult" class="mt-4"></div>
+      <div class="text-center mt-6">
+        <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="closeModal()">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* 为选题按钮保留语义类，使用 Tailwind 的视觉样式通过 JS 切换 */
+    .question-num { /* base styles complement Tailwind defaults */
+      padding: 10px 8px;
+      text-align: center;
+      border: 2px solid #e6e6e6;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .question-num.current { background-color:#4f46e5; color:white; border-color:#4f46e5; box-shadow: 0 8px 20px rgba(79,70,229,0.25); }
+    .question-num.answered { background-color:#16a34a; color:white; border-color:#16a34a; }
+    .question-num.wrong { background-color:#ef4444; color:white; border-color:#ef4444; }
+    /* 选项基类（JS 会增加 correct/wrong/selected） */
+    .option { padding: 12px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: all .2s; }
+    .option.selected { border-color:#4f46e5; background:#f8f9ff; }
+    .option.correct { border-color:#16a34a; background:#dff7ea; color:#166534; }
+    .option.wrong { border-color:#ef4444; background:#fff2f2; color:#b91c1c; }
+  </style>
+
+  <script>
+    // 全局变量
+    let currentUser = null;
+    let currentCourse = null;
+    let currentMode = null; // 'practice', 'exam', 'wrong'
+    let currentQuestionIndex = 0;
+    let questions = [];
+    let userAnswers = [];
+    let wrongQuestions = JSON.parse(localStorage.getItem('wrongQuestions') || '[]');
+    let examTimer = null;
+    let examTimeLeft = 3600; // 60分钟
+
+    // 模拟学员数据
+    const students = [
+      { idCard: '430102199001011234', name: '张三' },
+      { idCard: '430102199002021234', name: '李四' },
+      { idCard: '430102199003031234', name: '王五' }
+    ];
+
+    // 题库数据
+    const questionBank = {
+      practice: generateQuestions(500),
+      exam: generateQuestions(50)
+    };
+
+    function generateQuestions(count) {
+      const questions = [];
+      const questionTypes = ['单选题', '判断题'];
+
+      for (let i = 0; i < count; i++) {
+        const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+        let question;
+
+        if (type === '单选题') {
+          question = {
+            id: i + 1,
+            type: type,
+            text: `关于网络预约出租车驾驶员的相关规定，以下哪项是正确的？`,
+            options: [
+              'A：需要取得相应的从业资格证',
+              'B：不需要任何证件',
+              'C：只需要驾驶证',
+              'D：只需要身份证'
+            ],
+            correctAnswer: 0
+          };
+        } else {
+          question = {
+            id: i + 1,
+            type: type,
+            text: `网络预约出租车驾驶员必须取得从业资格证才能从事相关工作。`,
+            options: [
+              '正确',
+              '错误'
+            ],
+            correctAnswer: 0
+          };
+        }
+
+        questions.push(question);
+      }
+
+      return questions;
+    }
+
+    // 登录功能
+    function login() {
+      const idCard = document.getElementById('idCard').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!idCard || !password) {
+        alert('请输入身份证号和密码');
+        return;
+      }
+
+      if (!/^\d{18}$/.test(idCard)) {
+        alert('请输入正确的18位身份证号');
+        return;
+      }
+
+      const student = students.find(s => s.idCard === idCard);
+      if (!student) {
+        alert('身份证号不存在，请联系管理员');
+        return;
+      }
+
+      const expectedPassword = idCard.slice(-6);
+      if (password !== expectedPassword) {
+        alert('密码错误，密码为身份证号后六位');
+        return;
+      }
+
+      currentUser = student;
+      document.getElementById('userIdCard').textContent = idCard;
+      document.getElementById('userName').textContent = student.name;
+
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('mainPage').style.display = 'block';
+    }
+
+    // 退出登录
+    function logout() {
+      currentUser = null;
+      currentCourse = null;
+      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('mainPage').style.display = 'none';
+      document.getElementById('studyPage').style.display = 'none';
+      document.getElementById('practicePage').style.display = 'none';
+      document.getElementById('examPage').style.display = 'none';
+      document.getElementById('examRulesPage').style.display = 'none';
+      document.getElementById('wrongPage').style.display = 'none';
+      document.getElementById('idCard').value = '';
+      document.getElementById('password').value = '';
+    }
+
+    // 切换标签页（修改：切换 Tailwind 类）
+    function showTab(tabName, btnRef) {
+      // 隐藏所有 tab-pane
+      document.querySelectorAll('.tab-pane').forEach(p => {
+        p.classList.add('hidden');
+        p.classList.remove('block');
+      });
+
+      // 恢复所有 tab-item 样式为不激活
+      document.querySelectorAll('.tab-item').forEach(btn => {
+        btn.classList.remove('text-indigo-600','bg-white','border-b-2','border-indigo-600','font-semibold');
+        btn.classList.add('text-gray-600');
+      });
+
+      // 显示目标 Pane
+      const pane = document.getElementById(tabName + 'Tab');
+      if (pane) {
+        pane.classList.remove('hidden');
+        pane.classList.add('block');
+      }
+
+      // 激活当前按钮：因为onclick 传入的为字符串标记，上面我们无法取得实际 element 引用，
+      // 所以通过比较 data-name 找到对应按钮并激活（更稳健）
+      document.querySelectorAll('.tab-item').forEach(btn => {
+        if ((btn.getAttribute('data-name') || btn.dataset.name) === tabName) {
+          btn.classList.add('text-indigo-600','bg-white','border-b-2','border-indigo-600','font-semibold');
+          btn.classList.remove('text-gray-600');
+        }
+      });
+    }
+
+    // 进入课程
+    function enterCourse(courseType) {
+      currentCourse = courseType;
+      const titles = {
+        regional: '长沙市网络预约出租车驾驶员区域科目从业资格培训',
+        public: '长沙市网络预约出租车驾驶员公共科目从业资格培训'
+      };
+
+      document.getElementById('courseTitle').textContent = titles[courseType];
+      document.getElementById('mainPage').style.display = 'none';
+      document.getElementById('studyPage').style.display = 'block';
+    }
+
+    // 返回主页
+    function backToMain() {
+      document.getElementById('studyPage').style.display = 'none';
+      document.getElementById('mainPage').style.display = 'block';
+    }
+
+    // 返回学习页
+    function backToStudy() {
+      document.getElementById('practicePage').style.display = 'none';
+      document.getElementById('examPage').style.display = 'none';
+      document.getElementById('examRulesPage').style.display = 'none';
+      document.getElementById('wrongPage').style.display = 'none';
+      document.getElementById('studyPage').style.display = 'block';
+      if (examTimer) {
+        clearInterval(examTimer);
+        examTimer = null;
+      }
+    }
+
+    // 开始顺序练习
+    function startPractice() {
+      currentMode = 'practice';
+      questions = [...questionBank.practice];
+      userAnswers = new Array(questions.length).fill(null);
+      currentQuestionIndex = 0;
+      document.getElementById('studyPage').style.display = 'none';
+      document.getElementById('practicePage').style.display = 'block';
+      showQuestion('practice');
+    }
+
+    // 显示考试规则
+    function showExamRules() {
+      document.getElementById('studyPage').style.display = 'none';
+      document.getElementById('examRulesPage').style.display = 'block';
+    }
+
+    // 开始模拟考试
+    function startExam() {
+      currentMode = 'exam';
+      questions = [...questionBank.exam];
+      userAnswers = new Array(questions.length).fill(null);
+      currentQuestionIndex = 0;
+      examTimeLeft = 3600;
+      document.getElementById('examRulesPage').style.display = 'none';
+      document.getElementById('examPage').style.display = 'block';
+      showQuestion('exam');
+      startExamTimer();
+    }
+
+    // 开始考试计时器
+    function startExamTimer() {
+      if (examTimer) clearInterval(examTimer);
+      examTimer = setInterval(() => {
+        examTimeLeft--;
+        const minutes = Math.floor(examTimeLeft / 60);
+        const seconds = examTimeLeft % 60;
+        document.getElementById('examTimer').textContent =
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        if (examTimeLeft <= 0) {
+          clearInterval(examTimer);
+          examTimer = null;
+          submitExam(true);
+        }
+      }, 1000);
+    }
+
+    // 显示错题
+    function showWrongQuestions() {
+      if (wrongQuestions.length === 0) {
+        alert('暂无错题');
+        return;
+      }
+      currentMode = 'wrong';
+      questions = [...wrongQuestions];
+      userAnswers = new Array(questions.length).fill(null);
+      currentQuestionIndex = 0;
+      document.getElementById('studyPage').style.display = 'none';
+      document.getElementById('wrongPage').style.display = 'block';
+      showQuestion('wrong');
+    }
+
+    // 显示题目
+    function showQuestion(mode) {
+      if (questions.length === 0) return;
+      const question = questions[currentQuestionIndex];
+      const prefix = mode === 'practice' ? 'practice' : mode === 'exam' ? 'exam' : 'wrong';
+      document.getElementById(prefix + 'QuestionNum').textContent =
+        `第${currentQuestionIndex + 1}题/共${questions.length}题`;
+      document.getElementById(prefix + 'QuestionType').textContent = question.type;
+      document.getElementById(prefix + 'QuestionText').textContent = question.text;
+      const optionsContainer = document.getElementById(prefix + 'Options');
+      optionsContainer.innerHTML = '';
+      question.options.forEach((option, index) => {
+        const li = document.createElement('li');
+        li.className = 'option bg-white';
+        li.textContent = option;
+        li.onclick = () => selectOption(mode, index);
+        if (userAnswers[currentQuestionIndex] !== null) {
+          if (index === userAnswers[currentQuestionIndex]) {
+            li.classList.add('selected');
+          }
+        }
+        optionsContainer.appendChild(li);
+      });
+    }
+
+    // 选择选项
+    function selectOption(mode, optionIndex) {
+      const question = questions[currentQuestionIndex];
+      const prefix = mode === 'practice' ? 'practice' : mode === 'exam' ? 'exam' : 'wrong';
+      const optionsContainer = document.getElementById(prefix + 'Options');
+      optionsContainer.querySelectorAll('.option').forEach(option => {
+        option.classList.remove('selected', 'correct', 'wrong');
+      });
+      userAnswers[currentQuestionIndex] = optionIndex;
+      const selectedOption = optionsContainer.children[optionIndex];
+      selectedOption.classList.add('selected');
+      const isCorrect = optionIndex === question.correctAnswer;
+      if (isCorrect) {
+        selectedOption.classList.add('correct');
+        setTimeout(() => {
+          if (mode === 'wrong') {
+            removeFromWrongQuestions(question.id);
+            questions.splice(currentQuestionIndex, 1);
+            userAnswers.splice(currentQuestionIndex, 1);
+            if (questions.length === 0) {
+              alert('恭喜！所有错题都已完成！');
+              backToStudy();
+              return;
+            }
+            if (currentQuestionIndex >= questions.length) {
+              currentQuestionIndex = questions.length - 1;
+            }
+          } else {
+            if (currentQuestionIndex < questions.length - 1) {
+              currentQuestionIndex++;
+            }
+          }
+          showQuestion(mode);
+        }, 800);
+      } else {
+        selectedOption.classList.add('wrong');
+        const correctOption = optionsContainer.children[question.correctAnswer];
+        if (correctOption) correctOption.classList.add('correct');
+        addToWrongQuestions(question);
+      }
+    }
+
+    // 添加到错题集
+    function addToWrongQuestions(question) {
+      const exists = wrongQuestions.find(q => q.id === question.id);
+      if (!exists) {
+        wrongQuestions.push(question);
+        localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
+      }
+    }
+
+    // 从错题集移除
+    function removeFromWrongQuestions(questionId) {
+      wrongQuestions = wrongQuestions.filter(q => q.id !== questionId);
+      localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
+    }
+
+    // 上一题
+    function previousQuestion(mode) {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showQuestion(mode);
+      }
+    }
+
+    // 下一题
+    function nextQuestion(mode) {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion(mode);
+      }
+    }
+
+    // 重做题目
+    function redoQuestion(mode) {
+      userAnswers[currentQuestionIndex] = null;
+      showQuestion(mode);
+    }
+
+    // 结束练习
+    function endPractice() {
+      showConfirm('确认结束练习？', () => {
+        backToStudy();
+      });
+    }
+
+    // 提交考试
+    function submitExam(autoSubmit = false) {
+      const unansweredCount = userAnswers.filter(answer => answer === null).length;
+      if (!autoSubmit && unansweredCount > 0) {
+        showConfirm(`还有${unansweredCount}道未完成题目，确定提交吗？`, () => {
+          calculateExamResult();
+        });
+      } else {
+        calculateExamResult();
+      }
+    }
+
+    // 计算考试成绩
+    function calculateExamResult() {
+      if (examTimer) {
+        clearInterval(examTimer);
+        examTimer = null;
+      }
+      let correctCount = 0;
+      questions.forEach((question, index) => {
+        if (userAnswers[index] === question.correctAnswer) {
+          correctCount++;
+        }
+      });
+      const score = correctCount;
+      const passed = score >= 40;
+      const resultHtml = `
+                <div class="text-center">
+                    <h2 style="color: ${passed ? '#16a34a' : '#ef4444'}; font-size:20px; margin-bottom:8px;">
+                        ${passed ? '考试通过' : '考试未通过'}
+                    </h2>
+                    <p style="font-size:24px; margin: 12px 0;">
+                        得分：<strong>${score}</strong>/50
+                    </p>
+                    <p>正确题数：${correctCount}</p>
+                    <p>错误题数：${questions.length - correctCount}</p>
+                    <p>通过标准：40分</p>
+                </div>
+            `;
+      document.getElementById('examResult').innerHTML = resultHtml;
+      document.getElementById('resultModal').style.display = 'flex';
+    }
+
+    // 显示选题弹窗
+    function showQuestionSelector(mode) {
+      const selector = document.getElementById('questionSelector');
+      selector.innerHTML = '';
+      questions.forEach((question, index) => {
+        const div = document.createElement('div');
+        div.className = 'question-num';
+        div.textContent = index + 1;
+        if (index === currentQuestionIndex) {
+          div.classList.add('current');
+        } else if (userAnswers[index] !== null) {
+          div.classList.add('answered');
+        }
+        div.onclick = () => {
+          currentQuestionIndex = index;
+          showQuestion(mode);
+          closeModal();
+        };
+        selector.appendChild(div);
+      });
+      document.getElementById('questionModal').style.display = 'flex';
+    }
+
+    // 显示确认弹窗
+    function showConfirm(message, callback) {
+      document.getElementById('confirmMessage').textContent = message;
+      document.getElementById('confirmBtn').onclick = () => {
+        callback();
+        closeModal();
+      };
+      document.getElementById('confirmModal').style.display = 'flex';
+    }
+
+    // 关闭弹窗
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+      });
+    }
+
+    // 点击弹窗外部关闭
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.onclick = (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      };
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // 初始化：确保第一个 tab 激活（在 DOM 中默认已设置）
+      // 若想默认激活其它 tab，可调用 showTab('profile')
+    });
+  </script>
+</body>
+</html>
