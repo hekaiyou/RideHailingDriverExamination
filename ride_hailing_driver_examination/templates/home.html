@@ -39,7 +39,11 @@
               {% endif %}
             </div>
             <div class="course-title flex-1 text-gray-800 text-base leading-relaxed">
-              长沙市网络预约出租车驾驶员<span class="text-red-500">{{ course.get_subject_type_display }}</span>从业资格培训
+              {{ course.name }}
+              <!-- 添加科目类型标识 -->
+              <span class="ml-2 inline-block bg-gray-200 text-gray-800 text-sm font-semibold px-2 rounded">
+                {{ course.get_subject_type_display }}
+              </span>
             </div>
           </div>
           {% endfor %}
