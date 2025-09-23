@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>长沙市网络预约出租车驾驶员培训系统 - 登录</title>
+  <title>网络预约出租车驾驶员培训系统 - 登录</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -12,15 +12,8 @@
     <!-- 登录页面 -->
     <div class="flex items-center justify-center min-h-screen p-6">
       <div class="w-full">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
-              {{ message }}
-            </div>
-          {% endfor %}
-        {% endif %}
         <div class="text-center mb-8">
-          <h1 class="text-gray-800 text-2xl font-semibold">长沙市网络预约出租车驾驶员培训系统</h1>
+          <h1 class="text-gray-800 text-2xl font-semibold">网络预约出租车驾驶员培训系统</h1>
         </div>
         <div class="mx-auto w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
           <form method="POST">
@@ -36,6 +29,14 @@
                      class="w-full p-3 border-2 border-gray-200 rounded-md text-base focus:outline-none focus:border-indigo-500" required />
               <div class="text-red-500 text-xs mt-2">密码默认身份证号后六位</div>
             </div>
+            <!-- 错误提示消息的位置 -->
+            {% if messages %}
+              {% for message in messages %}
+                <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
             <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-base font-medium">
               确认
             </button>
