@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Student(models.Model):
 
     class ProfessionType(models.TextChoices):
@@ -22,3 +23,19 @@ class Student(models.Model):
     class Meta:
         verbose_name = "学员"
         verbose_name_plural = "学员"
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=255, verbose_name='课程名称')
+    exam_subject = models.CharField(max_length=255, verbose_name='考试科目')
+    question_count = models.IntegerField(verbose_name='试题数量')
+    exam_time = models.IntegerField(verbose_name='考试时间(分钟)')
+    score_per_question = models.FloatField(verbose_name='单题分值')
+    passing_score = models.FloatField(verbose_name='通过分数')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "课程"
+        verbose_name_plural = "课程"
