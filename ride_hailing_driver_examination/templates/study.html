@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>课程学习 - 网络预约出租车驾驶员培训系统</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
+  <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
+
+    <div class="header bg-indigo-600 text-white p-4 flex items-center">
+      <button onclick="backToMain()"
+              class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white"
+              aria-label="返回主页面">←</button>
+      <h1 class="text-lg font-semibold">课程学习</h1>
+    </div>
+
+    <div class="tab-content p-5">
+      <div class="study-modules grid grid-cols-1 gap-4">
+        <div class="module-item bg-white rounded-xl p-6 shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition"
+             onclick="startPractice()">
+          <div class="module-icon w-14 h-14 bg-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-xl mb-4">
+            📝
+          </div>
+          <h3 class="text-gray-800 font-medium">顺序练习</h3>
+        </div>
+
+        <div class="module-item bg-white rounded-xl p-6 shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition"
+             onclick="showExamRules()">
+          <div class="module-icon w-14 h-14 bg-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-xl mb-4">
+            📋
+          </div>
+          <h3 class="text-gray-800 font-medium">模拟考试</h3>
+        </div>
+
+        <div class="module-item bg-white rounded-xl p-6 shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition"
+             onclick="showWrongQuestions()">
+          <div class="module-icon w-14 h-14 bg-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-xl mb-4">
+            ❌
+          </div>
+          <h3 class="text-gray-800 font-medium">我的错题</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function backToMain() {
+      window.location.href = "{% url 'home' %}"; // 返回课程首页
+    }
+
+    function startPractice() {
+      // 启动练习逻辑，例如跳转到练习页面
+      // window.location.href = "{% url 'start_practice' %}"; // 这个URL需要在urls.py中定义
+    }
+
+    function showExamRules() {
+      // 显示考试规则，例如跳转到考试规则页面
+      // window.location.href = "{% url 'exam_rules' %}"; // 这个URL需要在urls.py中定义
+    }
+
+    function showWrongQuestions() {
+      // 显示错题页面，例如跳转到错题页面
+      // window.location.href = "{% url 'wrong_questions' %}"; // 这个URL需要在urls.py中定义
+    }
+  </script>
+
+</body>
+</html>

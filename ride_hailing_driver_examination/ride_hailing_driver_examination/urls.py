@@ -28,4 +28,6 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     # 退出登录视图
     path('logout/', views.logout_view, name='logout'),
+    # 学习视图
+    path('study/', views.study_view, name='study'),
 ]

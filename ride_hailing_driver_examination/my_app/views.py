@@ -52,3 +52,14 @@ def logout_view(request):
     except KeyError:
         pass
     return redirect('login')
+
+
+def study_view(request):
+    if 'student_id' not in request.session:
+        return redirect('login')  # 未登录用户重定向到登录
+    student = Student.objects.get(id=request.session['student_id'])
+    context = {
+        'student': student,
+        # 您还可以添加与课程相关的数据
+    }
+    return render(request, 'study.html', context)

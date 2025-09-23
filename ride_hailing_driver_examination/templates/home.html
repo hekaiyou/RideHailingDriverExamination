@@ -38,7 +38,7 @@
                 🚕
               {% endif %}
             </div>
-            <div class="course-title flex-1 text-gray-800 text-base leading-relaxed">
+            <div class="course-title flex-1 text-gray-800 text-base leading-relaxed" onclick="window.location.href='{% url 'study' %}'">
               {{ course.name }}
               <!-- 添加科目类型标识 -->
               <span class="ml-2 inline-block bg-gray-200 text-gray-800 text-sm font-semibold px-2 rounded">
