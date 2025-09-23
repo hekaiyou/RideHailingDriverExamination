@@ -25,7 +25,7 @@ def tool_fill_template(question_md_file):
     )
     files_to_read_file_list = [
         'README.md',
-        'develop/demo/index.html',
+        'develop/demo/index-tailwindcss.html',
     ]
     files_to_read_dir_list = [
         'ride_hailing_driver_examination',
