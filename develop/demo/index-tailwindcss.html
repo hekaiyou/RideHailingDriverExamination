@@ -95,10 +95,10 @@
 
     <!-- 课程学习页面 -->
     <div id="studyPage" class="study-page" style="display:none;">
-      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
-              onclick="backToMain()">←</button>
-
-      <div class="header bg-indigo-600 text-white p-4 text-center">
+      <div class="header bg-indigo-600 text-white p-4 flex items-center">
+        <button onclick="backToMain()"
+                class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white"
+                aria-label="返回主页面">←</button>
         <h1 id="courseTitle" class="text-lg font-semibold">课程学习</h1>
       </div>
 
@@ -127,8 +127,12 @@
 
     <!-- 考试规则页面 -->
     <div id="examRulesPage" class="exam-page" style="display:none;">
-      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
-              onclick="backToStudy()">←</button>
+      <div class="header bg-indigo-600 text-white p-4 flex items-center">
+        <button onclick="backToStudy()"
+                class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white"
+                aria-label="返回学习页">←</button>
+        <h1 class="text-lg font-semibold">模拟考试规则</h1>
+      </div>
 
       <div class="tab-content p-5">
         <div class="exam-rules bg-white rounded-xl p-8 shadow-md text-center">
@@ -146,8 +150,12 @@
 
     <!-- 顺序练习页面 -->
     <div id="practicePage" class="practice-page" style="display:none;">
-      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
-              onclick="backToStudy()">←</button>
+      <div class="header bg-indigo-600 text-white p-4 flex items-center">
+        <button onclick="backToStudy()"
+                class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white"
+                aria-label="返回学习页">←</button>
+        <h1 class="text-lg font-semibold">顺序练习</h1>
+      </div>
 
       <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
         <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
@@ -169,8 +177,12 @@
 
     <!-- 模拟考试页面 -->
     <div id="examPage" class="exam-page" style="display:none;">
-      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
-              onclick="backToStudy()">←</button>
+      <div class="header bg-indigo-600 text-white p-4 flex items-center">
+        <button onclick="backToStudy()"
+                class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white"
+                aria-label="返回学习页">←</button>
+        <h1 class="text-lg font-semibold">模拟考试</h1>
+      </div>
 
       <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
         <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
@@ -196,8 +208,12 @@
 
     <!-- 我的错题页面 -->
     <div id="wrongPage" class="wrong-page" style="display:none;">
-      <button class="back-btn absolute top-5 left-5 bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700"
-              onclick="backToStudy()">←</button>
+      <div class="header bg-indigo-600 text-white p-4 flex items-center">
+        <button onclick="backToStudy()"
+                class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white"
+                aria-label="返回学习页">←</button>
+        <h1 class="text-lg font-semibold">我的错题</h1>
+      </div>
 
       <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
         <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
@@ -253,7 +269,7 @@
 
   <style>
     /* 为选题按钮保留语义类，使用 Tailwind 的视觉样式通过 JS 切换 */
-    .question-num { /* base styles complement Tailwind defaults */
+    .question-num {
       padding: 10px 8px;
       text-align: center;
       border: 2px solid #e6e6e6;
@@ -411,8 +427,7 @@
         pane.classList.add('block');
       }
 
-      // 激活当前按钮：因为onclick 传入的为字符串标记，上面我们无法取得实际 element 引用，
-      // 所以通过比较 data-name 找到对应按钮并激活（更稳健）
+      // 激活当前按钮：根据 data-name 找到对应按钮并激活
       document.querySelectorAll('.tab-item').forEach(btn => {
         if ((btn.getAttribute('data-name') || btn.dataset.name) === tabName) {
           btn.classList.add('text-indigo-600','bg-white','border-b-2','border-indigo-600','font-semibold');
