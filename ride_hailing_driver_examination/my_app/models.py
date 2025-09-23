@@ -57,6 +57,21 @@ class Question(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='questions', verbose_name='课程')
     text = models.TextField(verbose_name='题目描述')
     question_type = models.CharField(max_length=20, choices=QuestionType.choices, verbose_name='题目类型')
+    # 适用于判断题的正确性字段
+    is_correct = models.BooleanField(default=False, verbose_name='正确答案')
+    # 适用于单选和多选题的选项
+    option_a = models.CharField(max_length=255, blank=True, verbose_name='选项A')
+    a_correct = models.BooleanField(default=False, verbose_name='选项A为正确答案')
+    option_b = models.CharField(max_length=255, blank=True, verbose_name='选项B')
+    b_correct = models.BooleanField(default=False, verbose_name='选项B为正确答案')
+    option_c = models.CharField(max_length=255, blank=True, verbose_name='选项C')
+    c_correct = models.BooleanField(default=False, verbose_name='选项C为正确答案')
+    option_d = models.CharField(max_length=255, blank=True, verbose_name='选项D')
+    d_correct = models.BooleanField(default=False, verbose_name='选项D为正确答案')
+    option_e = models.CharField(max_length=255, blank=True, verbose_name='选项E')
+    e_correct = models.BooleanField(default=False, verbose_name='选项E为正确答案')
+    option_f = models.CharField(max_length=255, blank=True, verbose_name='选项F')
+    f_correct = models.BooleanField(default=False, verbose_name='选项F为正确答案')
  
     def __str__(self):
         return self.text

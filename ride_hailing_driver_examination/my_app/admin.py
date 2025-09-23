@@ -15,6 +15,16 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('题目详情', {'fields': ('course', 'text', 'question_type',)}),
+        ('判断题', {'fields': ('is_correct',)}),
+        ('选择题', {'fields': ('option_a', 'a_correct','option_b', 'b_correct', 'option_c', 'c_correct', 'option_d', 'd_correct', 'option_e', 'e_correct', 'option_f', 'f_correct')}),
+    )
+    add_fieldsets = (
+        ('题目详情', {'fields': ('course', 'text', 'question_type',)}),
+        ('判断题', {'fields': ('is_correct',)}),
+        ('选择题', {'fields': ('option_a', 'a_correct','option_b', 'b_correct', 'option_c', 'c_correct', 'option_d', 'd_correct', 'option_e', 'e_correct', 'option_f', 'f_correct')}),
+    )
     list_display = ('text', 'question_type',)
     search_fields = ('text',)
     list_filter = ('question_type', 'course')
