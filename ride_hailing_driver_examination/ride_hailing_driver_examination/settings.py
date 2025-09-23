@@ -81,9 +81,6 @@ DATABASES = {
     }
 }
 
-# 自定义用户模型
-AUTH_USER_MODEL = 'my_app.CustomUser'
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
