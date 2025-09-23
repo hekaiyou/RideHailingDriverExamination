@@ -10,5 +10,5 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'exam_subject', 'question_count',)
-    search_fields = ('name', 'exam_subject',)
+    list_display = ('name', 'subject_type',)
+    search_fields = ('name',)

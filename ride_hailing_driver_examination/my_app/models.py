@@ -26,7 +26,13 @@ class Student(models.Model):
 
 
 class Course(models.Model):
+
+    class SubjectType(models.TextChoices):
+        REGIONAL = 'Regional', '区域科目'
+        PUBLIC = 'Public', '公共科目'
+
     name = models.CharField(max_length=255, verbose_name='课程名称')
+    subject_type = models.CharField(max_length=20, choices=SubjectType.choices, verbose_name='科目类型')
     exam_subject = models.CharField(max_length=255, verbose_name='考试科目')
     question_count = models.IntegerField(verbose_name='试题数量')
     exam_time = models.IntegerField(verbose_name='考试时间(分钟)')
