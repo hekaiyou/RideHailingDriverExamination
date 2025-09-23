@@ -22,4 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # 登录视图
     path('login/', views.login_view, name='login'),
+    # 首页视图
+    path('home/', views.home_view, name='home'),
+    # 
+    path('profile/', views.profile_view, name='profile'),
+    # 退出登录视图
+    path('logout/', views.logout_view, name='logout'),
 ]

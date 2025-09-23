@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Student
+from .models import Student, Course
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -20,3 +21,36 @@ def login_view(request):
             return redirect('home')
         messages.error(request, '密码错误')
     return render(request, 'login.html')
+
+
+def home_view(request):
+    if 'student_id' not in request.session:
+        # 如果用户未登录, 则重定向到登录页面
+        return redirect('login')
+    student = Student.objects.get(id=request.session['student_id'])
+    # 获取所有课程
+    courses = Course.objects.all()
+    context = {
+        'student': student,
+        'courses': courses
+    }
+    return render(request, 'home.html', context)
+
+
+def profile_view(request):
+    if 'student_id' not in request.session:
+        # 如果用户未登录, 则重定向到登录页面
+        return redirect('login')
+    student = Student.objects.get(id=request.session['student_id'])
+    context = {
+        'student': student,
+    }
+    return render(request, 'profile.html', context)
+
+
+def logout_view(request):
+    try:
+        del request.session['student_id']
+    except KeyError:
+        pass
+    return redirect('login')
