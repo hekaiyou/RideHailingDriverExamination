@@ -26,6 +26,26 @@
         </a>
       </div>
 
+      <!-- 我的课程 -->
+      <div class="tab-content p-5">
+        <div class="space-y-4">
+          {% for course in courses %}
+          <div class="course-item flex items-center p-5 bg-white rounded-xl shadow-md cursor-pointer transform hover:-translate-y-1 transition" onclick="enterCourse('{{ course.subject_type|lower }}')">
+            <div class="course-image flex-shrink-0 w-28 h-28 rounded-xl mr-5 flex items-center justify-center text-4xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg">
+              {% if course.subject_type == "Regional" %}
+                🚗
+              {% else %}
+                🚕
+              {% endif %}
+            </div>
+            <div class="course-title flex-1 text-gray-800 text-base leading-relaxed">
+              长沙市网络预约出租车驾驶员<span class="text-red-500">{{ course.get_subject_type_display }}</span>从业资格培训
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
     </div>
     
   </div>

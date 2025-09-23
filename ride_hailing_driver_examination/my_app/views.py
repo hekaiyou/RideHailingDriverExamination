@@ -27,11 +27,9 @@ def home_view(request):
     if 'student_id' not in request.session:
         # 如果用户未登录, 则重定向到登录页面
         return redirect('login')
-    student = Student.objects.get(id=request.session['student_id'])
     # 获取所有课程
     courses = Course.objects.all()
     context = {
-        'student': student,
         'courses': courses
     }
     return render(request, 'home.html', context)
