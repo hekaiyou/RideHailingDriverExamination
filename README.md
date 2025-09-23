@@ -8,6 +8,7 @@
 ```shell
 % cd ride_hailing_driver_examination
 % python3 manage.py makemigrations
+% python3 manage.py makemigrations my_app
 % python3 manage.py migrate
 ```
 
