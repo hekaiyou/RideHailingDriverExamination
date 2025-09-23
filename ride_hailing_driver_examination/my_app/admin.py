@@ -3,5 +3,5 @@ from .models import Student
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('id_card', 'profession_type', 'password',)
+    list_display = ('id_card', 'profession_type',)
     search_fields = ('id_card',)
