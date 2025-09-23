@@ -26,6 +26,25 @@
         </a>
       </div>
 
+      <!-- 个人中心 -->
+      <div class="content p-5">
+        <div class="profile-info bg-white rounded-xl p-6 shadow-md mb-4">
+          <div class="profile-item flex justify-between py-3 border-b border-gray-100">
+            <span class="profile-label font-semibold text-gray-800">姓名</span>
+            <span class="profile-value text-gray-600">{{ student.name }}</span>
+          </div>
+          <div class="profile-item flex justify-between py-3 border-b border-gray-100">
+            <span class="profile-label font-semibold text-gray-800">身份证号</span>
+            <span class="profile-value text-gray-600">{{ student.id_card }}</span>
+          </div>
+          <div class="profile-item flex justify-between py-3">
+            <span class="profile-label font-semibold text-gray-800">从业类型</span>
+            <span class="profile-value text-gray-600">{{ student.profession_type }}</span>
+          </div>
+        </div>
+        <a href="{% url 'logout' %}" class="logout-btn w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="">退出登录</a>
+      </div>
+
     </div>
     
   </div>
