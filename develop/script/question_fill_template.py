@@ -9,7 +9,7 @@ def tool_fill_template(question_md_file):
     project_directory = "./"
     # 初始化内容模板
     template_content = (
-        """现在需要开发一个出租车司机从业资格模拟考试系统, 目前已经在 `develop/demo/index.html` 文件里实现一个静态网站。
+        """现在需要开发一个出租车司机从业资格模拟考试系统, 目前已经在 `develop/demo/index-tailwindcss.html` 文件里实现一个静态网站。
 一、具体业务流程: 管理员在后台开通账户密码后, 出租车司机作为学员, 使用这个账户密码可以登录系统进行选择一个课程进行【顺序练习】、【模拟考试】、查看【我的错题】。
 二、核心功能:
     1、运营后台 (移动端H5):
@@ -24,11 +24,17 @@ def tool_fill_template(question_md_file):
         • 【我的错题】页: 本页面汇总在【顺序练习】、【模拟考试】页面答错的题目, 对这些题目重新作答, 答对则将该题从本页面移除。\n"""
     )
     files_to_read_file_list = [
-        'README.md',
         'develop/demo/index-tailwindcss.html',
+        'ride_hailing_driver_examination/manage.py',
+        'ride_hailing_driver_examination/my_app/__init__.py',
+        'ride_hailing_driver_examination/my_app/admin.py',
+        'ride_hailing_driver_examination/my_app/apps.py',
+        'ride_hailing_driver_examination/my_app/models.py',
+        'ride_hailing_driver_examination/my_app/tests.py',
+        'ride_hailing_driver_examination/my_app/views.py',
     ]
     files_to_read_dir_list = [
-        'ride_hailing_driver_examination',
+        'ride_hailing_driver_examination/ride_hailing_driver_examination',
     ]
     # 需要读取的文件及其在模板中的标识符
     files_to_read = {}
@@ -43,7 +49,7 @@ def tool_fill_template(question_md_file):
         # 使用 os.walk 遍历目录树
         for root, dirs, files in os.walk(os.path.join(project_directory, dir_path)):
             for file in files:
-                if '.DS_Store' in file:
+                if '.DS_Store' in file or '.gitkeep' in file or '.pyc' in file:
                     continue
                 # 构建文件的完整路径
                 full_path = os.path.join(root, file)
