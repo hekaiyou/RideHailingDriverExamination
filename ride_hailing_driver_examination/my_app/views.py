@@ -96,3 +96,14 @@ def exam_view(request, course_id):
         'questions': questions,
     }
     return render(request, 'exam.html', context)
+
+
+def exam_rules_view(request, course_id):
+    if 'student_id' not in request.session:
+        return redirect('login')
+    # 获取课程信息
+    course = get_object_or_404(Course, id=course_id)
+    context = {
+        'course': course,
+    }
+    return render(request, 'exam_rules.html', context)

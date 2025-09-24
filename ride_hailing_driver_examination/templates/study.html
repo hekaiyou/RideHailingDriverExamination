@@ -51,13 +51,13 @@
     }
 
     function startPractice() {
-      // 启动练习逻辑，例如跳转到练习页面
+      // 启动练习逻辑, 例如跳转到练习页面
       window.location.href = "{% url 'practice' course.id %}";
     }
 
     function showExamRules() {
-      // 显示考试规则，例如跳转到考试规则页面
-      window.location.href = "{% url 'exam' course.id %}";
+      // 显示考试规则, 例如跳转到考试规则页面
+      window.location.href = "{% url 'exam_rules' course.id %}";
     }
 
     function showWrongQuestions() {

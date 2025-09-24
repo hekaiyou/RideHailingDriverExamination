@@ -34,4 +34,6 @@ urlpatterns = [
     path('practice/<int:course_id>/', views.practice_view, name='practice'),
     # 模拟考试视图
     path('exam/<int:course_id>/', views.exam_view, name='exam'),
+    # 模拟考试规则视图
+    path('exam-rules/<int:course_id>/', views.exam_rules_view, name='exam_rules'),
 ]

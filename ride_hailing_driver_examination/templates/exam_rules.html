@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>模拟考试规则 - 网络预约出租车驾驶员培训系统</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
+  <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
+
+    <div class="header bg-indigo-600 text-white p-4 flex items-center">
+      <button onclick="window.history.back()" class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white" aria-label="返回主页面">←</button>
+      <h1 class="text-lg font-semibold">模拟考试规则</h1>
+    </div>
+
+
+    <div class="tab-content p-5">
+      <div class="exam-rules bg-white rounded-xl p-6 shadow-md text-center">
+        <h2 class="text-gray-800 text-xl font-semibold mb-4">模拟考试规则</h2>
+        <ol class="rules-list text-left space-y-3 mb-4">
+          <li class="bg-gray-50 p-3 rounded-md">考试科目：{{ course.exam_subject }} </li>
+          <li class="bg-gray-50 p-3 rounded-md">试题数量：{{ course.question_count }}题</li>
+          <li class="bg-gray-50 p-3 rounded-md">考试时间：{{ course.exam_time }}分钟</li>
+          <li class="bg-gray-50 p-3 rounded-md">通过标准：满分{{ course.question_count }}分，{{ course.passing_score }}分通过</li>
+        </ol>
+        <button class="start-exam-btn mt-3 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md" onclick="startExam()">开始模拟考试</button>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <script>
+    function startExam() {
+      window.location.href = "{% url 'exam' course.id %}";
+    }
+  </script>
+
+</body>
+</html>
