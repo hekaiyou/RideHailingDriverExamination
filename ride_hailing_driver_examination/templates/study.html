@@ -57,7 +57,7 @@
 
     function showExamRules() {
       // 显示考试规则，例如跳转到考试规则页面
-      // exam_rules
+      window.location.href = "{% url 'exam' course.id %}";
     }
 
     function showWrongQuestions() {

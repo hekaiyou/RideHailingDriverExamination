@@ -82,3 +82,17 @@ def practice_view(request, course_id):
     }
     print(context)
     return render(request, 'practice.html', context)
+
+
+def exam_view(request, course_id):
+    if 'student_id' not in request.session:
+        return redirect('login')
+    # 获取课程信息
+    course = get_object_or_404(Course, id=course_id)
+    # 获取课程下所有题目
+    questions = list(course.questions.all())
+    context = {
+        'course': course,
+        'questions': questions,
+    }
+    return render(request, 'exam.html', context)
