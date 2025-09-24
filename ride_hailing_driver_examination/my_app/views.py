@@ -54,12 +54,13 @@ def logout_view(request):
     return redirect('login')
 
 
-def study_view(request):
+def study_view(request, course_id):
     if 'student_id' not in request.session:
-        return redirect('login')  # 未登录用户重定向到登录
-    student = Student.objects.get(id=request.session['student_id'])
+        # 未登录用户重定向到登录
+        return redirect('login')
+    # 获取课程对象
+    course = get_object_or_404(Course, id=course_id)
     context = {
-        'student': student,
-        # 您还可以添加与课程相关的数据
+        'course': course,
     }
     return render(request, 'study.html', context)
