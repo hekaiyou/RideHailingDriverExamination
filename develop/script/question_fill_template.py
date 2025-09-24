@@ -36,6 +36,7 @@ def tool_fill_template(question_md_file):
     files_to_read_dir_list = [
         'ride_hailing_driver_examination/ride_hailing_driver_examination',
         'ride_hailing_driver_examination/templates',
+        'ride_hailing_driver_examination/my_app/templatetags'
     ]
     # 需要读取的文件及其在模板中的标识符
     files_to_read = {}

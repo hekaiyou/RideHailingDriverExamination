@@ -10,6 +10,8 @@
 <body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
   <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
 
+    {% load custom_tags %}
+
     <div class="header bg-indigo-600 text-white p-4 flex items-center">
       <button onclick="window.history.back()" class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white" aria-label="返回主页面">←</button>
       <h1 class="text-lg font-semibold">模拟考试规则</h1>
@@ -22,7 +24,7 @@
           <li class="bg-gray-50 p-3 rounded-md">考试科目: {{ course.exam_subject }}</li>
           <li class="bg-gray-50 p-3 rounded-md">试题数量: {{ course.question_count }} 题</li>
           <li class="bg-gray-50 p-3 rounded-md">考试时间: {{ course.exam_time }} 分钟</li>
-          <li class="bg-gray-50 p-3 rounded-md">通过标准: 满分 {{ course.question_count }} 分, {{ course.passing_score }} 分通过</li>
+          <li class="bg-gray-50 p-3 rounded-md">通过标准: 满分 {{ course.question_count|mul:course.score_per_question }} 分, {{ course.passing_score }} 分通过</li>
         </ol>
         <button class="start-exam-btn mt-3 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md" onclick="startExam()">开始模拟考试</button>
       </div>
