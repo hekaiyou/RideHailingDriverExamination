@@ -83,3 +83,18 @@ class Question(models.Model):
     class Meta:
         verbose_name = "题目"
         verbose_name_plural = "题目"
+
+
+class WrongAnswer(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='wrong_answers', verbose_name='学员')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='wrong_answers', verbose_name='题目')
+    answered_at = models.DateTimeField(auto_now_add=True, verbose_name='答题时间')
+
+    class Meta:
+        verbose_name = "错题记录"
+        verbose_name_plural = "错题记录"
+        # 确保同一个学员对同一题目的记录唯一
+        unique_together = ('student', 'question')
+
+    def __str__(self):
+        return self.question.text
