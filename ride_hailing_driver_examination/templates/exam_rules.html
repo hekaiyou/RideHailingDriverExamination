@@ -15,21 +15,19 @@
       <h1 class="text-lg font-semibold">模拟考试规则</h1>
     </div>
 
-
     <div class="tab-content p-5">
-      <div class="exam-rules bg-white rounded-xl p-6 shadow-md text-center">
+      <div class="exam-rules bg-white rounded-xl p-8 shadow-md text-center">
         <h2 class="text-gray-800 text-xl font-semibold mb-4">模拟考试规则</h2>
         <ol class="rules-list text-left space-y-3 mb-4">
-          <li class="bg-gray-50 p-3 rounded-md">考试科目：{{ course.exam_subject }} </li>
-          <li class="bg-gray-50 p-3 rounded-md">试题数量：{{ course.question_count }}题</li>
-          <li class="bg-gray-50 p-3 rounded-md">考试时间：{{ course.exam_time }}分钟</li>
-          <li class="bg-gray-50 p-3 rounded-md">通过标准：满分{{ course.question_count }}分，{{ course.passing_score }}分通过</li>
+          <li class="bg-gray-50 p-3 rounded-md">考试科目: {{ course.exam_subject }}</li>
+          <li class="bg-gray-50 p-3 rounded-md">试题数量: {{ course.question_count }} 题</li>
+          <li class="bg-gray-50 p-3 rounded-md">考试时间: {{ course.exam_time }} 分钟</li>
+          <li class="bg-gray-50 p-3 rounded-md">通过标准: 满分 {{ course.question_count }} 分, {{ course.passing_score }} 分通过</li>
         </ol>
         <button class="start-exam-btn mt-3 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md" onclick="startExam()">开始模拟考试</button>
       </div>
     </div>
 
-    
   </div>
 
   <script>
