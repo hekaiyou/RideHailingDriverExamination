@@ -52,7 +52,7 @@
 
     function startPractice() {
       // 启动练习逻辑，例如跳转到练习页面
-      // start_practice
+      window.location.href = "{% url 'practice' course.id %}";
     }
 
     function showExamRules() {

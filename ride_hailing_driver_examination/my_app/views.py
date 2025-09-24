@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Student, Course
@@ -64,3 +65,20 @@ def study_view(request, course_id):
         'course': course,
     }
     return render(request, 'study.html', context)
+
+
+def practice_view(request, course_id):
+    if 'student_id' not in request.session:
+        return redirect('login')
+    # 获取课程和相关问题
+    course = get_object_or_404(Course, id=course_id)
+    # 获取课程下所有题目
+    questions = list(course.questions.all())
+    # 随机化题目顺序
+    random.shuffle(questions)
+    context = {
+        'course': course,
+        'questions': questions,
+    }
+    print(context)
+    return render(request, 'practice.html', context)

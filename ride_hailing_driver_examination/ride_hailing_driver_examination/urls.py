@@ -29,5 +29,7 @@ urlpatterns = [
     # 退出登录视图
     path('logout/', views.logout_view, name='logout'),
     # 学习视图
-    path('study/<int:course_id>/', views.study_view, name='study'),  
+    path('study/<int:course_id>/', views.study_view, name='study'),
+    # 顺序练习页面
+    path('practice/<int:course_id>/', views.practice_view, name='practice'),
 ]
