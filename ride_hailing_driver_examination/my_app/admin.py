@@ -33,6 +33,6 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(WrongAnswer)
 class WrongAnswerAdmin(admin.ModelAdmin):
-    list_display = ('student', 'question', 'answered_at',)
-    search_fields = ('student__name', 'question__text',)
-    list_filter = ('answered_at',)
+    list_display = ('question', 'student',)
+    search_fields = ('question__text', 'student__name',)
+    list_filter = ('answered_at', 'course',)

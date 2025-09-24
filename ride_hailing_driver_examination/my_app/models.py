@@ -88,6 +88,7 @@ class Question(models.Model):
 class WrongAnswer(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='wrong_answers', verbose_name='学员')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='wrong_answers', verbose_name='题目')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='wrong_answers', verbose_name='课程')
     answered_at = models.DateTimeField(auto_now_add=True, verbose_name='答题时间')
 
     class Meta:
