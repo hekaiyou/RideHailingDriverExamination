@@ -62,7 +62,7 @@
 
     function showWrongQuestions() {
       // 显示错题页面，例如跳转到错题页面
-      // wrong_questions
+      window.location.href = "{% url 'wrong_questions' course.id %}";
     }
   </script>
 

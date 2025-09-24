@@ -107,3 +107,14 @@ def exam_rules_view(request, course_id):
         'course': course,
     }
     return render(request, 'exam_rules.html', context)
+
+
+def wrong_questions_view(request, course_id):
+    if 'student_id' not in request.session:
+        return redirect('login')
+    student = get_object_or_404(Student, id=request.session['student_id'])
+    wrong_answers = student.wrong_answers.select_related('question').all()
+    context = {
+        'wrong_answers': wrong_answers,
+    }
+    return render(request, 'wrong_questions.html', context)
