@@ -2,6 +2,7 @@ import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Student, Course
+from .serializers import serialize_questions
 
 
 def login_view(request):
@@ -76,11 +77,12 @@ def practice_view(request, course_id):
     questions = list(course.questions.all())
     # 随机化题目顺序
     random.shuffle(questions)
+    # 使用序列化器将问题转换为 JSON 格式
+    questions_json = serialize_questions(questions)
     context = {
         'course': course,
-        'questions': questions,
+        'questions': questions_json,
     }
-    print(context)
     return render(request, 'practice.html', context)
 
 

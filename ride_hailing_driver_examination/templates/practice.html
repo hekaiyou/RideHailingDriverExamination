@@ -15,17 +15,144 @@
       <h1 class="text-lg font-semibold">顺序练习</h1>
     </div>
 
+    <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
+
+      <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+        <span class="question-number text-indigo-600 font-semibold" id="questionNum">第 0 题 / 共 0 题</span>
+        <span class="question-type bg-indigo-600 text-white px-3 py-1 rounded-full text-xs" id="questionType">题型</span>
+      </div>
+
+      <div class="question-text text-gray-800 text-base leading-relaxed mb-4" id="questionText">问题描述</div>
+
+      <ul class="options space-y-3" id="optionsList">答案选项</ul>
+
+    </div>
+
     <div class="controls flex flex-wrap gap-3 justify-between items-center p-5 m-5 bg-white rounded-xl shadow-md">
-      <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="">上一题</button>
-      <button class="btn btn-danger px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="">结束练习</button>
-      <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="">下一题</button>
-      <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="">选题</button>
-      <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="">重做</button>
+      <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="previousQuestion()">上一题</button>
+      <button class="btn btn-danger px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="endPractice()">结束练习</button>
+      <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="nextQuestion()">下一题</button>
+      <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="showQuestionSelector()">选题</button>
+      <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="redoQuestion()">重做</button>
     </div>
 
   </div>
 
   <script>
+    // 当前问题索引
+    let currentQuestionIndex = 0;
+    // 从后端传递的题目数据
+    const questions = JSON.parse('{{ questions|safe }}');
+
+    function selectOption(optionIndex) {
+      // 处理选项选择逻辑
+    }
+
+    function previousQuestion() {
+      // 处理上一题的逻辑
+      if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          updateQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      // 处理下一题的逻辑
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        updateQuestion();
+      }
+    }
+
+    function endPractice() {
+      // 结束练习的逻辑
+    }
+
+    function showQuestionSelector() {
+      // 显示选题的逻辑
+    }
+
+    function redoQuestion() {
+      // 重做当前题目的逻辑
+    }
+
+    function updateQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      // 更新当前题目的逻辑
+      document.getElementById('questionNum').innerText = `第 ${currentQuestionIndex + 1} 题 / 共 ${questions.length} 题`;
+      // 使用 fields 获取题目文本
+      document.getElementById('questionText').innerText = currentQuestion.fields.text;
+      // 清空选项
+      optionsList.innerHTML = '';
+      // 根据题目类型渲染不同的选项
+      switch (currentQuestion.fields.question_type) {
+        case 'SingleChoice':
+          // 单选题
+          const singleChoiceOptions = [
+            { text: currentQuestion.fields.option_a, correct: currentQuestion.fields.a_correct },
+            { text: currentQuestion.fields.option_b, correct: currentQuestion.fields.b_correct },
+            { text: currentQuestion.fields.option_c, correct: currentQuestion.fields.c_correct },
+            { text: currentQuestion.fields.option_d, correct: currentQuestion.fields.d_correct },
+            { text: currentQuestion.fields.option_e, correct: currentQuestion.fields.e_correct },
+            { text: currentQuestion.fields.option_f, correct: currentQuestion.fields.f_correct },
+          ];
+          singleChoiceOptions.forEach((option, index) => {
+            if (option.text) {
+              // 只添加非空选项
+              const li = document.createElement('li');
+              li.className = 'option';
+              li.innerText = option.text;
+              li.onclick = () => selectOption(index);
+              optionsList.appendChild(li);
+            }
+          });
+          break;
+        case 'TrueFalse':
+          // 判断题
+          const trueOption = document.createElement('li');
+          trueOption.className = 'option';
+          trueOption.innerText = '正确';
+          // 假设正确为选项 0
+          trueOption.onclick = () => selectOption(0);
+          optionsList.appendChild(trueOption);
+          const falseOption = document.createElement('li');
+          falseOption.className = 'option';
+          falseOption.innerText = '错误';
+          // 假设错误为选项 1
+          falseOption.onclick = () => selectOption(1);
+          optionsList.appendChild(falseOption);
+          break;
+        case 'MultipleChoice':
+          // 多选题
+          const multipleChoiceOptions = [
+            { text: currentQuestion.fields.option_a, correct: currentQuestion.fields.a_correct },
+            { text: currentQuestion.fields.option_b, correct: currentQuestion.fields.b_correct },
+            { text: currentQuestion.fields.option_c, correct: currentQuestion.fields.c_correct },
+            { text: currentQuestion.fields.option_d, correct: currentQuestion.fields.d_correct },
+            { text: currentQuestion.fields.option_e, correct: currentQuestion.fields.e_correct },
+            { text: currentQuestion.fields.option_f, correct: currentQuestion.fields.f_correct },
+          ];
+          multipleChoiceOptions.forEach((option, index) => {
+            if (option.text) {
+              // 只添加非空选项
+              const li = document.createElement('li');
+              li.className = 'option';
+              li.innerText = option.text;
+              li.onclick = () => selectOption(index);
+              optionsList.appendChild(li);
+            }
+          });
+          break;
+        default:
+          optionsList.innerHTML = '<li>未知题型的答案选项</li>';
+          break;
+      }
+    }
+
+    window.onload = function() {
+      // 页面加载时调用
+      updateQuestion();
+    };
   </script>
 
 </body>
