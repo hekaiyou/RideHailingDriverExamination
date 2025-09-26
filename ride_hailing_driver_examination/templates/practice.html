@@ -153,64 +153,42 @@
       switch (currentQuestion.fields.question_type) {
         case 'SingleChoice':
           // 单选题
-          const singleChoiceOptions = [
-            { text: currentQuestion.fields.option_a, correct: currentQuestion.fields.a_correct },
-            { text: currentQuestion.fields.option_b, correct: currentQuestion.fields.b_correct },
-            { text: currentQuestion.fields.option_c, correct: currentQuestion.fields.c_correct },
-            { text: currentQuestion.fields.option_d, correct: currentQuestion.fields.d_correct },
-            { text: currentQuestion.fields.option_e, correct: currentQuestion.fields.e_correct },
-            { text: currentQuestion.fields.option_f, correct: currentQuestion.fields.f_correct },
-          ];
-          singleChoiceOptions.forEach((option, index) => {
-            if (option.text) {
-              // 只添加非空选项
-              const li = document.createElement('li');
-              li.className = 'option';
-              li.innerText = option.text;
-              li.onclick = () => selectOption(index);
-              optionsList.appendChild(li);
-            }
-          });
+          addOption(currentQuestion.fields.option_a, 'A');
+          addOption(currentQuestion.fields.option_b, 'B');
+          addOption(currentQuestion.fields.option_c, 'C');
+          addOption(currentQuestion.fields.option_d, 'D');
+          addOption(currentQuestion.fields.option_e, 'E');
+          addOption(currentQuestion.fields.option_f, 'F');
           break;
         case 'TrueFalse':
           // 判断题
-          const trueOption = document.createElement('li');
-          trueOption.className = 'option';
-          trueOption.innerText = '正确';
-          // 假设正确为选项 0
-          trueOption.onclick = () => selectOption(0);
-          optionsList.appendChild(trueOption);
-          const falseOption = document.createElement('li');
-          falseOption.className = 'option';
-          falseOption.innerText = '错误';
-          // 假设错误为选项 1
-          falseOption.onclick = () => selectOption(1);
-          optionsList.appendChild(falseOption);
+          addOption('正确');
+          addOption('错误');
           break;
         case 'MultipleChoice':
           // 多选题
-          const multipleChoiceOptions = [
-            { text: currentQuestion.fields.option_a, correct: currentQuestion.fields.a_correct },
-            { text: currentQuestion.fields.option_b, correct: currentQuestion.fields.b_correct },
-            { text: currentQuestion.fields.option_c, correct: currentQuestion.fields.c_correct },
-            { text: currentQuestion.fields.option_d, correct: currentQuestion.fields.d_correct },
-            { text: currentQuestion.fields.option_e, correct: currentQuestion.fields.e_correct },
-            { text: currentQuestion.fields.option_f, correct: currentQuestion.fields.f_correct },
-          ];
-          multipleChoiceOptions.forEach((option, index) => {
-            if (option.text) {
-              // 只添加非空选项
-              const li = document.createElement('li');
-              li.className = 'option';
-              li.innerText = option.text;
-              li.onclick = () => selectOption(index);
-              optionsList.appendChild(li);
-            }
-          });
+          addOption(currentQuestion.fields.option_a, 'A');
+          addOption(currentQuestion.fields.option_b, 'B');
+          addOption(currentQuestion.fields.option_c, 'C');
+          addOption(currentQuestion.fields.option_d, 'D');
+          addOption(currentQuestion.fields.option_e, 'E');
+          addOption(currentQuestion.fields.option_f, 'F');
           break;
         default:
           optionsList.innerHTML = '<li>未知题型的答案选项</li>';
           break;
+      }
+    }
+
+    function addOption(optionText, prefix) {
+      // 只添加非空选项
+      if (optionText) {
+        const optionsList = document.getElementById('optionsList');
+        const li = document.createElement('li');
+        li.className = 'option bg-white p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100';
+        li.innerText = prefix ? `${prefix}: ${optionText}` : optionText;
+        li.onclick = () => selectOption(optionText);
+        optionsList.appendChild(li);
       }
     }
 
