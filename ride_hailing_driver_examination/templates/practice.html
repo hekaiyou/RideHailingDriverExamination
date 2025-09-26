@@ -137,6 +137,16 @@
       document.getElementById('questionNum').innerText = `第 ${currentQuestionIndex + 1} 题 / 共 ${questions.length} 题`;
       // 使用 fields 获取题目文本
       document.getElementById('questionText').innerText = currentQuestion.fields.text;
+      // 动态设置题型
+      const questionTypeElement = document.getElementById('questionType');
+      // 题型映射
+      const questionTypeMap = {
+        'SingleChoice': '单选题',
+        'TrueFalse': '判断题',
+        'MultipleChoice': '多选题',
+      };
+      // 设置题型文本
+      questionTypeElement.innerText = questionTypeMap[currentQuestion.fields.question_type] || '未知题型';
       // 清空选项
       optionsList.innerHTML = '';
       // 根据题目类型渲染不同的选项

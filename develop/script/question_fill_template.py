@@ -32,6 +32,7 @@ def tool_fill_template(question_md_file):
         'ride_hailing_driver_examination/my_app/models.py',
         'ride_hailing_driver_examination/my_app/tests.py',
         'ride_hailing_driver_examination/my_app/views.py',
+        'ride_hailing_driver_examination/my_app/serializers.py',
     ]
     files_to_read_dir_list = [
         'ride_hailing_driver_examination/ride_hailing_driver_examination',
