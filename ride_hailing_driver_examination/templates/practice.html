@@ -107,27 +107,37 @@
       const optionsList = document.getElementById('optionsList');
       // 当前选项
       const selectedOption = optionsList.children[optionIndex];
+      // 通过判断 li 中是否包含 correct-option 类来判断是否正确答案
+      const isCorrect = selectedOption.classList.contains('correct-option');
       // 根据题目类型处理选项
       switch (currentQuestion.fields.question_type) {
         case 'SingleChoice':
           // 清除之前选中的样式
           optionsList.querySelectorAll('.option').forEach(option => {
-            option.classList.remove('selected');
+            option.classList.remove('selected', 'correct', 'wrong');
           });
           // 选中当前选项
-          selectedOption.classList.add('selected');
-          // 单选题, 只允许选择一个选项
-          userAnswers[currentQuestionIndex] = optionIndex;
+          if (isCorrect) {
+            selectedOption.classList.add('correct');
+            // 单选题, 只允许选择一个选项
+            userAnswers[currentQuestionIndex] = optionIndex;
+          } else {
+            selectedOption.classList.add('wrong');
+          }
           break;
         case 'TrueFalse':
           // 清除之前选中的样式
           optionsList.querySelectorAll('.option').forEach(option => {
-            option.classList.remove('selected');
+            option.classList.remove('selected', 'correct', 'wrong');
           });
           // 选中当前选项
-          selectedOption.classList.add('selected');
-          // 判断题, 只有两个选项, 0为正确, 1为错误
-          userAnswers[currentQuestionIndex] = optionIndex;
+          if (isCorrect) {
+            selectedOption.classList.add('correct');
+            // 判断题, 只有两个选项, 0为正确, 1为错误
+            userAnswers[currentQuestionIndex] = optionIndex;
+          } else {
+            selectedOption.classList.add('wrong');
+          }
           break;
         case 'MultipleChoice':
           // 多选题, 允许选择多个选项
@@ -137,12 +147,16 @@
           if (userAnswers[currentQuestionIndex].includes(optionIndex)) {
             // 如果已经选择, 则取消选择
             userAnswers[currentQuestionIndex] = userAnswers[currentQuestionIndex].filter(index => index !== optionIndex);
-            selectedOption.classList.remove('selected');
+            selectedOption.classList.remove('selected', 'correct', 'wrong');
           } else {
             // 选中当前选项
-            selectedOption.classList.add('selected');
-            // 如果未选择, 则添加到答案中
-            userAnswers[currentQuestionIndex].push(optionIndex);
+            if (isCorrect) {
+              selectedOption.classList.add('correct');
+              // 如果未选择, 则添加到答案中
+              userAnswers[currentQuestionIndex].push(optionIndex);
+            } else {
+              selectedOption.classList.add('wrong');
+            }
           }
           break;
       }
