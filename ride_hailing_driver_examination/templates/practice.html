@@ -36,6 +36,17 @@
       <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="redoQuestion()">重做</button>
     </div>
 
+    <!-- 选题弹窗 -->
+    <div id="questionModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+      <div class="modal-content bg-white rounded-xl p-6 max-w-2xl w-11/12 max-h-[80vh] overflow-hidden shadow-2xl">
+        <h3 class="text-center text-lg font-semibold text-gray-800">选择题目</h3>
+        <div id="questionSelector" class="question-selector grid grid-cols-5 gap-2 mt-4 p-2 bg-gray-50 rounded-md overflow-y-auto" style="max-height:50vh;"></div>
+        <div class="text-center mt-4">
+          <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="closeModal()">关闭</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -69,7 +80,26 @@
     }
 
     function showQuestionSelector() {
-      // 显示选题的逻辑
+      // 显示选题弹窗的逻辑
+      const selector = document.getElementById('questionSelector');
+      selector.innerHTML = '';
+      questions.forEach((question, index) => {
+        const div = document.createElement('div');
+        div.className = 'question-num cursor-pointer text-center p-2 border border-gray-300 rounded-md';
+        div.textContent = index + 1;
+        div.onclick = () => {
+          currentQuestionIndex = index;
+          updateQuestion();
+          closeModal();
+        };
+        selector.appendChild(div);
+      });
+      document.getElementById('questionModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      // 关闭选题弹窗的逻辑
+      document.getElementById('questionModal').classList.add('hidden');
     }
 
     function redoQuestion() {
