@@ -96,6 +96,8 @@
   <script>
     // 当前问题索引
     let currentQuestionIndex = 0;
+    // 当前问题的正确答案数量
+    let correctAnswersCount = 0;
     // 从后端传递的题目数据
     const questions = JSON.parse('{{ questions|safe }}');
     // 用户答案数组，初始化为与问题数量相同的长度
@@ -123,6 +125,7 @@
             // 单选题, 只允许选择一个选项
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
+            setTimeout(nextQuestion, 1000); // 1秒后自动进入下一题
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
@@ -140,6 +143,7 @@
             // 判断题, 只有两个选项, 0为正确, 1为错误
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
+            setTimeout(nextQuestion, 1000); // 1秒后自动进入下一题
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
@@ -172,6 +176,12 @@
               userWrongAnswers[currentQuestionIndex].push(optionIndex);
             }
           }
+          // 判断 userWrongAnswers 是否为空, 且 userCorrectAnswers 的长度等于 correctAnswersCount
+          if (userWrongAnswers[currentQuestionIndex].length === 0 && userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
+            setTimeout(nextQuestion, 1000); // 1秒后自动进入下一题
+          }
+          // 打印 userCorrectAnswers[currentQuestionIndex].length  和 correctAnswersCount
+          console.log(userCorrectAnswers[currentQuestionIndex].length, correctAnswersCount);
           break;
       }
     }
@@ -237,6 +247,7 @@
     }
 
     function updateQuestion() {
+      correctAnswersCount = 0;
       const currentQuestion = questions[currentQuestionIndex];
       // 更新当前题目的逻辑
       document.getElementById('questionNum').innerText = `第 ${currentQuestionIndex + 1} 题 / 共 ${questions.length} 题`;
@@ -264,11 +275,13 @@
           addOption(currentQuestion.fields.option_d, 'D', currentQuestion.fields.d_correct, 3);
           addOption(currentQuestion.fields.option_e, 'E', currentQuestion.fields.e_correct, 4);
           addOption(currentQuestion.fields.option_f, 'F', currentQuestion.fields.f_correct, 5);
+          correctAnswersCount = 1;
           break;
         case 'TrueFalse':
           // 判断题
           addOption('正确', null, currentQuestion.fields.is_correct, 0);
           addOption('错误', null, !currentQuestion.fields.is_correct, 1);
+          correctAnswersCount = 1;
           break;
         case 'MultipleChoice':
           // 多选题
@@ -278,6 +291,24 @@
           addOption(currentQuestion.fields.option_d, 'D', currentQuestion.fields.d_correct, 3);
           addOption(currentQuestion.fields.option_e, 'E', currentQuestion.fields.e_correct, 4);
           addOption(currentQuestion.fields.option_f, 'F', currentQuestion.fields.f_correct, 5);
+          if (currentQuestion.fields.a_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.b_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.c_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.d_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.e_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.f_correct) {
+            correctAnswersCount++;
+          }
           break;
         default:
           optionsList.innerHTML = '<li>未知题型的答案选项</li>';
