@@ -148,21 +148,28 @@
           break;
         case 'MultipleChoice':
           // 多选题, 允许选择多个选项
-          if (userAnswers[currentQuestionIndex] === null) {
-            userAnswers[currentQuestionIndex] = [];
+          if (userCorrectAnswers[currentQuestionIndex] === null) {
+            userCorrectAnswers[currentQuestionIndex] = [];
           }
-          if (userAnswers[currentQuestionIndex].includes(optionIndex)) {
+          if (userWrongAnswers[currentQuestionIndex] === null) {
+            userWrongAnswers[currentQuestionIndex] = [];
+          }
+          if (userCorrectAnswers[currentQuestionIndex].includes(optionIndex)) {
             // 如果已经选择, 则取消选择
-            userAnswers[currentQuestionIndex] = userAnswers[currentQuestionIndex].filter(index => index !== optionIndex);
+            userCorrectAnswers[currentQuestionIndex] = userCorrectAnswers[currentQuestionIndex].filter(index => index !== optionIndex);
+            selectedOption.classList.remove('selected', 'correct', 'wrong');
+          } else if (userWrongAnswers[currentQuestionIndex].includes(optionIndex)) {
+            userWrongAnswers[currentQuestionIndex] = userWrongAnswers[currentQuestionIndex].filter(index => index !== optionIndex);
             selectedOption.classList.remove('selected', 'correct', 'wrong');
           } else {
             // 选中当前选项
             if (isCorrect) {
               selectedOption.classList.add('correct');
               // 如果未选择, 则添加到答案中
-              userAnswers[currentQuestionIndex].push(optionIndex);
+              userCorrectAnswers[currentQuestionIndex].push(optionIndex);
             } else {
               selectedOption.classList.add('wrong');
+              userWrongAnswers[currentQuestionIndex].push(optionIndex);
             }
           }
           break;
