@@ -99,10 +99,9 @@
     // 从后端传递的题目数据
     const questions = JSON.parse('{{ questions|safe }}');
     // 用户答案数组，初始化为与问题数量相同的长度
-    const userAnswers = new Array(questions.length).fill({
-      'correct': [],
-      'wrong': [],
-    });
+    const userCorrectAnswers = new Array(questions.length).fill(null);
+    const userWrongAnswers = new Array(questions.length).fill(null);
+
     function selectOption(optionIndex) {
       // 处理选项选择逻辑
       const currentQuestion = questions[currentQuestionIndex];
@@ -122,9 +121,12 @@
           if (isCorrect) {
             selectedOption.classList.add('correct');
             // 单选题, 只允许选择一个选项
-            userAnswers[currentQuestionIndex] = optionIndex;
+            userCorrectAnswers[currentQuestionIndex] = optionIndex;
+            userWrongAnswers[currentQuestionIndex] = null;
           } else {
             selectedOption.classList.add('wrong');
+            userCorrectAnswers[currentQuestionIndex] = null;
+            userWrongAnswers[currentQuestionIndex] = optionIndex;
           }
           break;
         case 'TrueFalse':
@@ -136,9 +138,12 @@
           if (isCorrect) {
             selectedOption.classList.add('correct');
             // 判断题, 只有两个选项, 0为正确, 1为错误
-            userAnswers[currentQuestionIndex] = optionIndex;
+            userCorrectAnswers[currentQuestionIndex] = optionIndex;
+            userWrongAnswers[currentQuestionIndex] = null;
           } else {
             selectedOption.classList.add('wrong');
+            userCorrectAnswers[currentQuestionIndex] = null;
+            userWrongAnswers[currentQuestionIndex] = optionIndex;
           }
           break;
         case 'MultipleChoice':
@@ -162,6 +167,9 @@
           }
           break;
       }
+      // 打印正确答案和错误答案
+      console.log('正确答案:', userCorrectAnswers);
+      console.log('错误答案:', userWrongAnswers);
     }
 
     function previousQuestion() {
