@@ -174,9 +174,6 @@
           }
           break;
       }
-      // 打印正确答案和错误答案
-      console.log('正确答案:', userCorrectAnswers);
-      console.log('错误答案:', userWrongAnswers);
     }
 
     function previousQuestion() {
@@ -304,6 +301,27 @@
         }
         li.onclick = () => selectOption(optionIndex);
         optionsList.appendChild(li);
+
+        switch (questions[currentQuestionIndex].fields.question_type) {
+          case 'SingleChoice':
+            // 如果用户之前选择过该选项, 更新样式
+            if (userCorrectAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('correct');
+            } else if (userWrongAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('wrong');
+            }
+            break;
+          case 'TrueFalse':
+            // 如果用户之前选择过该选项, 更新样式
+            if (userCorrectAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('correct');
+            } else if (userWrongAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('wrong');
+            }
+            break;
+          case 'MultipleChoice':
+            break;
+        }
       }
     }
 
