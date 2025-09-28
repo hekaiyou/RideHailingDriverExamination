@@ -40,4 +40,6 @@ urlpatterns = [
     path('wrong-questions/<int:course_id>/', views.wrong_questions_view, name='wrong_questions'),
     # 添加错题 API
     path('api/wrong-questions/', views.add_wrong_question, name='add_wrong_question'),
+    # 删除错题 API
+    path('api/delete-wrong-question/', views.delete_wrong_question, name='delete_wrong_question'),
 ]

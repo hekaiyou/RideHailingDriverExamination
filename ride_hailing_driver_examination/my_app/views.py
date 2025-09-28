@@ -161,3 +161,24 @@ def add_wrong_question(request):
         return JsonResponse({'error': '学员未登录'}, status=403)
     except Question.DoesNotExist:
         return JsonResponse({'error': '题目不存在'}, status=404)
+
+
+@csrf_protect
+@require_POST
+def delete_wrong_question(request):
+    data = json.loads(request.body)
+    student_id = request.session.get('student_id')
+    if not student_id:
+        return JsonResponse({'error': '缺少学生ID'}, status=400)
+    question_id = data.get('question_id')
+    if not question_id:
+        return JsonResponse({'error': '缺少题目ID'}, status=400)
+    # 获取学生对象
+    student = get_object_or_404(Student, id=student_id)
+    # 获取错题记录
+    try:
+        wrong_answer = WrongAnswer.objects.get(student=student, question_id=question_id)
+        wrong_answer.delete()
+        return JsonResponse({'message': '错题已删除'}, status=200)
+    except WrongAnswer.DoesNotExist:
+        return JsonResponse({'error': '错题记录不存在'}, status=404)

@@ -115,6 +115,7 @@
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
             questionCorrectness[currentQuestionIndex] = true;
+            deleteWrongQuestion(currentQuestion.pk);
             // 1秒后自动进入下一题
             setTimeout(nextQuestion, 1000);
           } else {
@@ -122,7 +123,6 @@
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
             questionCorrectness[currentQuestionIndex] = false;
-            //addToWrongQuestions(currentQuestion.pk);
           }
           break;
         case 'TrueFalse':
@@ -137,6 +137,7 @@
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
             questionCorrectness[currentQuestionIndex] = true;
+            deleteWrongQuestion(currentQuestion.pk);
             // 1秒后自动进入下一题
             setTimeout(nextQuestion, 1000);
           } else {
@@ -144,7 +145,6 @@
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
             questionCorrectness[currentQuestionIndex] = false;
-            //addToWrongQuestions(currentQuestion.pk);
           }
           break;
         case 'MultipleChoice':
@@ -176,13 +176,11 @@
           // 判断 userWrongAnswers 是否为空, 且 userCorrectAnswers 的长度等于 correctAnswersCount
           if (userWrongAnswers[currentQuestionIndex].length === 0 && userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
             questionCorrectness[currentQuestionIndex] = true;
+            deleteWrongQuestion(currentQuestion.pk);
             // 1秒后自动进入下一题
             setTimeout(nextQuestion, 1000);
           } else {
             questionCorrectness[currentQuestionIndex] = false;
-            if (userWrongAnswers[currentQuestionIndex].length + userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
-              //addToWrongQuestions(currentQuestion.pk);
-            }
           }
           break;
       }
@@ -361,6 +359,31 @@
       // 页面加载时调用
       updateQuestion();
     };
+
+    function deleteWrongQuestion(questionId) {
+      // 获取 CSRF 令牌
+      const csrfToken = '{{ csrf_token }}';
+      fetch(`/api/delete-wrong-question/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ question_id: questionId })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('网络错误');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('错题已删除:', data);
+      })
+      .catch(error => {
+        console.error('删除错题失败:', error);
+      });
+    }
   </script>
 
 </body>
