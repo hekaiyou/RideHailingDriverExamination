@@ -404,7 +404,7 @@
         if (examTimeLeft <= 0) {
           clearInterval(examTimer);
           // 自动提交考试
-          submitExam();
+          submitExam(false);
         }
       }, 1000);
     }
