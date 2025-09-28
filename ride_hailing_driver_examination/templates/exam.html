@@ -42,6 +42,8 @@
 <body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
   <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
 
+    {% load custom_tags %}
+
     <div class="header bg-indigo-600 text-white p-4 flex items-center">
       <button onclick="window.history.back()" class="mr-3 w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-800 text-white" aria-label="返回主页面">←</button>
       <h1 class="text-lg font-semibold">模拟考试</h1>
@@ -94,6 +96,17 @@
         <div class="text-center mt-6">
           <button class="btn btn-secondary px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md mr-3" onclick="closeSubmitExamModal()">取消</button>
           <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" id="confirmBtn">确定</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 成绩弹窗 -->
+    <div id="resultModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+      <div class="modal-content bg-white rounded-xl p-6 max-w-lg w-11/12 shadow-2xl">
+        <h3 class="text-center text-lg font-semibold text-gray-800">考试成绩</h3>
+        <div id="examResult" class="mt-4"></div>
+        <div class="text-center mt-6">
+          <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="closeModal()">确定</button>
         </div>
       </div>
     </div>
@@ -374,6 +387,23 @@
       let correctCount = {{ course.score_per_question }} * questionCorrectnessCount;
       // 判断是否通过
       const passed = correctCount >= {{ course.passing_score }};
+      // 显示结果
+      const resultHtml = `
+        <div class="text-center">
+          <h2 style="color: ${passed ? '#16a34a' : '#ef4444'}; font-size:20px; margin-bottom:8px;">
+            ${passed ? '考试通过' : '考试未通过'}
+          </h2>
+          <p style="font-size:24px; margin: 12px 0;">
+            得分：<strong>${correctCount}</strong> / {{ course.question_count|mul:course.score_per_question }}
+          </p>
+          <p>正确题数：${questionCorrectnessCount}</p>
+          <p>错误题数：${questions.length - questionCorrectnessCount}</p>
+          <p>通过标准：{{ course.passing_score }} 分</p>
+        </div>
+      `;
+      // 将结果插入到页面中
+      document.getElementById('examResult').innerHTML = resultHtml;
+      document.getElementById('resultModal').style.display = 'flex';
     }
 
     function submitExam(showWarning = true) {
