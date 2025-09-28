@@ -381,6 +381,8 @@
     }
 
     function calculateExamResult() {
+      // 停止计时器
+      clearInterval(examTimer);
       // 获取 questionCorrectness 里元素为 true 的个数
       let questionCorrectnessCount = questionCorrectness.filter(answer => answer === true).length;
       // 计算考试成绩
