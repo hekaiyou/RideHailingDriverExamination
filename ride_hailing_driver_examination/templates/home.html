@@ -30,7 +30,7 @@
       <div class="tab-content p-5">
         <div class="space-y-4">
           {% for course in courses %}
-          <div class="course-item flex items-center p-5 bg-white rounded-xl shadow-md cursor-pointer transform hover:-translate-y-1 transition" onclick="enterCourse('{{ course.subject_type|lower }}')">
+          <div class="course-item flex items-center p-5 bg-white rounded-xl shadow-md cursor-pointer transform hover:-translate-y-1 transition" onclick="window.location.href='{% url 'study' course.id %}'">
             <div class="course-image flex-shrink-0 w-28 h-28 rounded-xl mr-5 flex items-center justify-center text-4xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg">
               {% if course.subject_type == "Regional" %}
                 🚗
@@ -38,7 +38,7 @@
                 🚕
               {% endif %}
             </div>
-            <div class="course-title flex-1 text-gray-800 text-base leading-relaxed" onclick="window.location.href='{% url 'study' course.id %}'">
+            <div class="course-title flex-1 text-gray-800 text-base leading-relaxed">
               {{ course.name }}
               <!-- 添加科目类型标识 -->
               <span class="ml-2 inline-block bg-gray-200 text-gray-800 text-sm font-semibold px-2 rounded">
