@@ -119,9 +119,18 @@ def wrong_questions_view(request, course_id):
     if 'student_id' not in request.session:
         return redirect('login')
     student = get_object_or_404(Student, id=request.session['student_id'])
-    wrong_answers = student.wrong_answers.select_related('question').all()
+    course = get_object_or_404(Course, id=course_id)
+    # 获取当前用户在指定课程下的所有错题
+    wrong_answers = student.wrong_answers.filter(course=course).select_related('question').all()
+    # 获取全部错题对应的题目
+    questions = [wrong_answer.question for wrong_answer in wrong_answers]
+    # 随机化题目顺序
+    random.shuffle(questions)
+    # 使用序列化器将问题转换为 JSON 格式
+    questions_json = serialize_questions(questions)
     context = {
-        'wrong_answers': wrong_answers,
+        'course': course,
+        'questions': questions_json,
     }
     return render(request, 'wrong_questions.html', context)
 
