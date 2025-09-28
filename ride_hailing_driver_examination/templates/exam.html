@@ -60,6 +60,21 @@
 
     </div>
 
+    <div class="controls flex flex-wrap gap-3 justify-between items-center p-5 m-5 bg-white rounded-xl shadow-md">
+
+      <div class="flex gap-2">
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="previousQuestion()">上一题</button>
+        <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="nextQuestion()">下一题</button>
+        <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="showQuestionSelector()">选题</button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="timer text-red-600 font-semibold" id="examTimer">60:00</div>
+        <button class="btn btn-danger px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="submitExam()">交卷</button>
+      </div>
+
+    </div>
+
   </div>
 
   <script>
