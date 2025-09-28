@@ -24,7 +24,6 @@ def tool_fill_template(question_md_file):
         • 【我的错题】页: 本页面汇总在【顺序练习】、【模拟考试】页面答错的题目, 对这些题目重新作答, 答对则将该题从本页面移除。\n"""
     )
     files_to_read_file_list = [
-        'develop/demo/index-tailwindcss.html',
         'ride_hailing_driver_examination/manage.py',
         'ride_hailing_driver_examination/my_app/__init__.py',
         'ride_hailing_driver_examination/my_app/admin.py',

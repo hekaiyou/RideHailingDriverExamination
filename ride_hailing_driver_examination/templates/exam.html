@@ -106,7 +106,7 @@
         <h3 class="text-center text-lg font-semibold text-gray-800">考试成绩</h3>
         <div id="examResult" class="mt-4"></div>
         <div class="text-center mt-6">
-          <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="closeModal()">确定</button>
+          <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="goToStudyPage()">确定</button>
         </div>
       </div>
     </div>
@@ -404,6 +404,11 @@
       // 将结果插入到页面中
       document.getElementById('examResult').innerHTML = resultHtml;
       document.getElementById('resultModal').style.display = 'flex';
+    }
+
+    function goToStudyPage() {
+      // 重定向到学习页面
+      window.location.href = "{% url 'study' course.id %}";
     }
 
     function submitExam(showWarning = true) {
