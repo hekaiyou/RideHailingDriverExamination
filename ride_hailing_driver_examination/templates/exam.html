@@ -368,7 +368,12 @@
     }
 
     function calculateExamResult() {
+      // 获取 questionCorrectness 里元素为 true 的个数
+      let questionCorrectnessCount = questionCorrectness.filter(answer => answer === true).length;
       // 计算考试成绩
+      let correctCount = {{ course.score_per_question }} * questionCorrectnessCount;
+      // 判断是否通过
+      const passed = correctCount >= {{ course.passing_score }};
     }
 
     function submitExam(showWarning = true) {
