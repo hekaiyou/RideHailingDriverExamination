@@ -100,6 +100,9 @@
     const userWrongAnswers = new Array(questions.length).fill(null);
     // 数组记录每道题的正确性
     const questionCorrectness = new Array(questions.length).fill(null);
+    // 考试时间 (秒)
+    let examTimeLeft = {{ course.exam_time }} * 60;
+    let examTimer;
 
     function selectOption(optionIndex) {
       // 处理选项选择逻辑
@@ -352,9 +355,26 @@
       }
     }
 
+    function startExamTimer() {
+      examTimer = setInterval(() => {
+        examTimeLeft--;
+        const minutes = Math.floor(examTimeLeft / 60);
+        const seconds = examTimeLeft % 60;
+        document.getElementById('examTimer').textContent =
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        if (examTimeLeft <= 0) {
+          clearInterval(examTimer);
+          // 自动提交考试
+          // submitExam(true);
+        }
+      }, 1000);
+    }
+
     window.onload = function() {
       // 页面加载时调用
       updateQuestion();
+      // 启动考试计时器
+      startExamTimer();
     };
   </script>
 
