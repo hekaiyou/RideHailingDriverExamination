@@ -130,12 +130,22 @@ def wrong_questions_view(request, course_id):
 @require_POST
 def add_wrong_question(request):
     data = json.loads(request.body)
+    student_id = request.session.get('student_id')
+    if not student_id:
+        return JsonResponse({'error': '缺少学生ID'}, status=400)
     question_id = data.get('question_id')
     if not question_id:
         return JsonResponse({'error': '缺少题目ID'}, status=400)
+    # 获取学生对象
+    student = get_object_or_404(Student, id=student_id)
+    # 获取题目对象
+    question = get_object_or_404(Question, id=question_id)
+    # 检查是否已经存在该错题记录
+    existing_wrong_answer = WrongAnswer.objects.filter(student=student, question=question).first()
+    if existing_wrong_answer:
+        return JsonResponse({'message': '该错题已存在'}, status=400)
+    # 如果不存在, 则创建新的错题记录
     try:
-        student = Student.objects.get(id=request.session['student_id'])
-        question = Question.objects.get(id=question_id)
         WrongAnswer.objects.create(student=student, question=question, course=question.course)
         return JsonResponse({'message': '错题已添加'}, status=201)
     except Student.DoesNotExist:
