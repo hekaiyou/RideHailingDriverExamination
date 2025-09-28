@@ -69,7 +69,7 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <div class="timer text-red-600 font-semibold" id="examTimer">60:00</div>
+        <div class="timer text-red-600 font-semibold" id="examTimer">00:00</div>
         <button class="btn btn-danger px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md" onclick="submitExam()">交卷</button>
       </div>
 
@@ -82,6 +82,18 @@
         <div id="questionSelector" class="question-selector grid grid-cols-5 gap-2 mt-4 p-2 bg-gray-50 rounded-md overflow-y-auto" style="max-height:50vh;"></div>
         <div class="text-center mt-4">
           <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="closeModal()">关闭</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 确认弹窗 -->
+    <div id="confirmModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+      <div class="modal-content bg-white rounded-xl p-6 max-w-lg w-11/12 shadow-2xl">
+        <h3 class="text-center text-lg font-semibold text-gray-800">确认</h3>
+        <p id="confirmMessage" class="text-center text-gray-700 mt-3"></p>
+        <div class="text-center mt-6">
+          <button class="btn btn-secondary px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md mr-3" onclick="closeSubmitExamModal()">取消</button>
+          <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" id="confirmBtn">确定</button>
         </div>
       </div>
     </div>
@@ -355,6 +367,33 @@
       }
     }
 
+    function calculateExamResult() {
+      // 计算考试成绩
+    }
+
+    function submitExam(showWarning = true) {
+      // 提交考试
+      const unansweredCount = questionCorrectness.filter(answer => answer === null).length;
+      if (showWarning && unansweredCount > 0) {
+        // 显示确认弹窗
+        document.getElementById('confirmMessage').textContent = `还有 ${unansweredCount} 道未完成题目, 确定提交吗?`;
+        document.getElementById('confirmModal').style.display = 'flex';
+        document.getElementById('confirmBtn').onclick = () => {
+          // 计算考试成绩
+          calculateExamResult();
+          closeSubmitExamModal();
+        };
+        return;
+      }
+      // 计算考试成绩
+      calculateExamResult();
+    }
+
+    function closeSubmitExamModal() {
+      // 关闭提交考试确认弹窗
+      document.getElementById('confirmModal').style.display = 'none';
+    }
+
     function startExamTimer() {
       examTimer = setInterval(() => {
         examTimeLeft--;
@@ -365,7 +404,7 @@
         if (examTimeLeft <= 0) {
           clearInterval(examTimer);
           // 自动提交考试
-          // submitExam(true);
+          submitExam();
         }
       }, 1000);
     }
