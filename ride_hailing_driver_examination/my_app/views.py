@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
+from django.urls import reverse
 from .models import Student, Course, Question, WrongAnswer
 from .serializers import serialize_questions
 
@@ -66,8 +67,14 @@ def study_view(request, course_id):
         return redirect('login')
     # 获取课程对象
     course = get_object_or_404(Course, id=course_id)
+    # 检查是否有提示信息
+    show_message = request.GET.get('show_message', False)
+    # 获取提示信息
+    message = request.GET.get('message', None)
     context = {
         'course': course,
+        'show_message': show_message,
+        'message': message,
     }
     return render(request, 'study.html', context)
 
@@ -122,9 +129,11 @@ def wrong_questions_view(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     # 获取当前用户在指定课程下的所有错题
     wrong_answers = student.wrong_answers.filter(course=course).select_related('question').all()
-    # 如果没有错题, 重定向到学习页面
+    # 如果没有错题, 重定向到学习页面并传递提示信息
     if not wrong_answers:
-        return redirect('study', course_id=course.id)
+        # 设置提示信息
+        message = "您没有错题, 继续加油!"
+        return redirect(f"{reverse('study', args=[course.id])}?show_message=True&message={message}")
     # 获取全部错题对应的题目
     questions = [wrong_answer.question for wrong_answer in wrong_answers]
     # 随机化题目顺序

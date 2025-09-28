@@ -42,6 +42,20 @@
 
     </div>
 
+    <!-- 提示弹窗 -->
+    {% if show_message %}
+    <div id="messageModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+      <div class="modal-content bg-white rounded-xl p-6 max-w-lg w-11/12 shadow-2xl">
+        <h3 class="text-center text-lg font-semibold text-gray-800">提示</h3>
+        <!-- 使用 message 变量 -->
+        <p class="text-center text-gray-700 mt-3">{{ message }}</p>
+        <div class="text-center mt-6">
+          <button class="btn btn-primary px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" onclick="closeModal()">确定</button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
   </div>
 
   <script>
@@ -63,6 +77,17 @@
     function showWrongQuestions() {
       // 显示错题页面，例如跳转到错题页面
       window.location.href = "{% url 'wrong_questions' course.id %}";
+    }
+
+    function closeModal() {
+      document.getElementById('messageModal').style.display = 'none';
+      // 获取当前 URL
+      const url = new URL(window.location.href);
+      // 移除查询参数
+      url.searchParams.delete('show_message');
+      url.searchParams.delete('message');
+      // 使用 history.replaceState 更新 URL
+      window.history.replaceState({}, document.title, url);
     }
   </script>
 
