@@ -97,12 +97,14 @@
     // 当前问题索引
     let currentQuestionIndex = 0;
     // 当前问题的正确答案数量
-    let correctAnswersCount = 0;
+    let correctAnswersCount = 0
     // 从后端传递的题目数据
     const questions = JSON.parse('{{ questions|safe }}');
     // 用户答案数组，初始化为与问题数量相同的长度
     const userCorrectAnswers = new Array(questions.length).fill(null);
     const userWrongAnswers = new Array(questions.length).fill(null);
+    // 数组记录每道题的正确性
+    const questionCorrectness = new Array(questions.length).fill(null);
 
     function selectOption(optionIndex) {
       // 处理选项选择逻辑
@@ -125,12 +127,14 @@
             // 单选题, 只允许选择一个选项
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
+            questionCorrectness[currentQuestionIndex] = true;
             // 1秒后自动进入下一题
             setTimeout(nextQuestion, 1000);
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
+            questionCorrectness[currentQuestionIndex] = false;
           }
           break;
         case 'TrueFalse':
@@ -144,12 +148,14 @@
             // 判断题, 只有两个选项, 0为正确, 1为错误
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
+            questionCorrectness[currentQuestionIndex] = true;
             // 1秒后自动进入下一题
             setTimeout(nextQuestion, 1000);
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
+            questionCorrectness[currentQuestionIndex] = false;
           }
           break;
         case 'MultipleChoice':
@@ -180,8 +186,11 @@
           }
           // 判断 userWrongAnswers 是否为空, 且 userCorrectAnswers 的长度等于 correctAnswersCount
           if (userWrongAnswers[currentQuestionIndex].length === 0 && userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
+            questionCorrectness[currentQuestionIndex] = true;
             // 1秒后自动进入下一题
             setTimeout(nextQuestion, 1000);
+          } else {
+            questionCorrectness[currentQuestionIndex] = false;
           }
           break;
       }
@@ -247,6 +256,7 @@
       // 重做当前题目的逻辑
       userCorrectAnswers[currentQuestionIndex] = null;
       userWrongAnswers[currentQuestionIndex] = null;
+      questionCorrectness[currentQuestionIndex] = null;
       updateQuestion();
     }
 
