@@ -143,7 +143,7 @@ def add_wrong_question(request):
     # 检查是否已经存在该错题记录
     existing_wrong_answer = WrongAnswer.objects.filter(student=student, question=question).first()
     if existing_wrong_answer:
-        return JsonResponse({'message': '该错题已存在'}, status=400)
+        return JsonResponse({'message': '该错题已存在'}, status=200)
     # 如果不存在, 则创建新的错题记录
     try:
         WrongAnswer.objects.create(student=student, question=question, course=question.course)

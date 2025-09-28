@@ -193,7 +193,9 @@
             setTimeout(nextQuestion, 1000);
           } else {
             questionCorrectness[currentQuestionIndex] = false;
-            addToWrongQuestions(currentQuestion.pk);
+            if (userWrongAnswers[currentQuestionIndex].length + userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
+              addToWrongQuestions(currentQuestion.pk);
+            }
           }
           break;
       }
