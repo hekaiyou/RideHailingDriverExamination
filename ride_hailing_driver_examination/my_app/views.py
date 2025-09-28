@@ -104,9 +104,19 @@ def exam_view(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     # 获取课程下所有题目
     questions = list(course.questions.all())
+    # 获取试题数量
+    question_count = course.question_count
+    # 随机抽取试题
+    if len(questions) > question_count:
+        selected_questions = random.sample(questions, question_count)
+    else:
+        # 如果题目数量不足, 则全部使用
+        selected_questions = questions
+    # 使用序列化器将问题转换为 JSON 格式
+    questions_json = serialize_questions(selected_questions)
     context = {
         'course': course,
-        'questions': questions,
+        'questions': questions_json,
     }
     return render(request, 'exam.html', context)
 
