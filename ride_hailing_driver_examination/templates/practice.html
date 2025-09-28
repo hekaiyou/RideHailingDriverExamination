@@ -237,6 +237,14 @@
         const div = document.createElement('div');
         div.className = 'question-num cursor-pointer text-center p-2 border border-gray-300 rounded-md';
         div.textContent = index + 1;
+        // 根据 questionCorrectness 设置样式
+        if (questionCorrectness[index] === true) {
+          div.classList.add('bg-green-200');
+        } else if (questionCorrectness[index] === false) {
+          div.classList.add('bg-red-200');
+        } else {
+          div.classList.add('bg-gray-100');
+        }
         div.onclick = () => {
           currentQuestionIndex = index;
           updateQuestion();
