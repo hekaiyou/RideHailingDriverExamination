@@ -245,6 +245,9 @@
 
     function redoQuestion() {
       // 重做当前题目的逻辑
+      userCorrectAnswers[currentQuestionIndex] = null;
+      userWrongAnswers[currentQuestionIndex] = null;
+      updateQuestion();
     }
 
     function updateQuestion() {
