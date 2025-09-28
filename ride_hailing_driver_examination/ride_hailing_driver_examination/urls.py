@@ -38,4 +38,6 @@ urlpatterns = [
     path('exam-rules/<int:course_id>/', views.exam_rules_view, name='exam_rules'),
     # 我的错题视图
     path('wrong-questions/<int:course_id>/', views.wrong_questions_view, name='wrong_questions'),
+    # 添加错题 API
+    path('api/wrong-questions/', views.add_wrong_question, name='add_wrong_question'),
 ]

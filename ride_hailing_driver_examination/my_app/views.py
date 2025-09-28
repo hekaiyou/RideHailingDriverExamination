@@ -1,7 +1,11 @@
 import random
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Student, Course
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
+from .models import Student, Course, Question, WrongAnswer
 from .serializers import serialize_questions
 
 
@@ -120,3 +124,21 @@ def wrong_questions_view(request, course_id):
         'wrong_answers': wrong_answers,
     }
     return render(request, 'wrong_questions.html', context)
+
+
+@csrf_protect
+@require_POST
+def add_wrong_question(request):
+    data = json.loads(request.body)
+    question_id = data.get('question_id')
+    if not question_id:
+        return JsonResponse({'error': '缺少题目ID'}, status=400)
+    try:
+        student = Student.objects.get(id=request.session['student_id'])
+        question = Question.objects.get(id=question_id)
+        WrongAnswer.objects.create(student=student, question=question, course=question.course)
+        return JsonResponse({'message': '错题已添加'}, status=201)
+    except Student.DoesNotExist:
+        return JsonResponse({'error': '学员未登录'}, status=403)
+    except Question.DoesNotExist:
+        return JsonResponse({'error': '题目不存在'}, status=404)
