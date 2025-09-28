@@ -125,7 +125,8 @@
             // 单选题, 只允许选择一个选项
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
-            setTimeout(nextQuestion, 1000); // 1秒后自动进入下一题
+            // 1秒后自动进入下一题
+            setTimeout(nextQuestion, 1000);
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
@@ -143,7 +144,8 @@
             // 判断题, 只有两个选项, 0为正确, 1为错误
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
-            setTimeout(nextQuestion, 1000); // 1秒后自动进入下一题
+            // 1秒后自动进入下一题
+            setTimeout(nextQuestion, 1000);
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
@@ -178,10 +180,9 @@
           }
           // 判断 userWrongAnswers 是否为空, 且 userCorrectAnswers 的长度等于 correctAnswersCount
           if (userWrongAnswers[currentQuestionIndex].length === 0 && userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
-            setTimeout(nextQuestion, 1000); // 1秒后自动进入下一题
+            // 1秒后自动进入下一题
+            setTimeout(nextQuestion, 1000);
           }
-          // 打印 userCorrectAnswers[currentQuestionIndex].length  和 correctAnswersCount
-          console.log(userCorrectAnswers[currentQuestionIndex].length, correctAnswersCount);
           break;
       }
     }
@@ -351,6 +352,11 @@
             }
             break;
           case 'MultipleChoice':
+            if (userCorrectAnswers[currentQuestionIndex].includes(optionIndex)) {
+              li.classList.add('correct');
+            } else if (userWrongAnswers[currentQuestionIndex].includes(optionIndex)) {
+              li.classList.add('wrong');
+            }
             break;
         }
       }
