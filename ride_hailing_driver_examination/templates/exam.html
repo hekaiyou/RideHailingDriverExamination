@@ -75,6 +75,17 @@
 
     </div>
 
+    <!-- 选题弹窗 -->
+    <div id="questionModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+      <div class="modal-content bg-white rounded-xl p-6 max-w-2xl w-11/12 max-h-[80vh] overflow-hidden shadow-2xl">
+        <h3 class="text-center text-lg font-semibold text-gray-800">选择题目</h3>
+        <div id="questionSelector" class="question-selector grid grid-cols-5 gap-2 mt-4 p-2 bg-gray-50 rounded-md overflow-y-auto" style="max-height:50vh;"></div>
+        <div class="text-center mt-4">
+          <button class="btn btn-secondary px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md" onclick="closeModal()">关闭</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -89,6 +100,262 @@
     const userWrongAnswers = new Array(questions.length).fill(null);
     // 数组记录每道题的正确性
     const questionCorrectness = new Array(questions.length).fill(null);
+
+    function selectOption(optionIndex) {
+      // 处理选项选择逻辑
+      const currentQuestion = questions[currentQuestionIndex];
+      const optionsList = document.getElementById('optionsList');
+      // 当前选项
+      const selectedOption = optionsList.children[optionIndex];
+      // 通过判断 li 中是否包含 correct-option 类来判断是否正确答案
+      const isCorrect = selectedOption.classList.contains('correct-option');
+      // 根据题目类型处理选项
+      switch (currentQuestion.fields.question_type) {
+        case 'SingleChoice':
+          // 清除之前选中的样式
+          optionsList.querySelectorAll('.option').forEach(option => {
+            option.classList.remove('selected', 'correct', 'wrong');
+          });
+          // 选中当前选项
+          if (isCorrect) {
+            selectedOption.classList.add('correct');
+            // 单选题, 只允许选择一个选项
+            userCorrectAnswers[currentQuestionIndex] = optionIndex;
+            userWrongAnswers[currentQuestionIndex] = null;
+            questionCorrectness[currentQuestionIndex] = true;
+            // 1秒后自动进入下一题
+            setTimeout(nextQuestion, 1000);
+          } else {
+            selectedOption.classList.add('wrong');
+            userCorrectAnswers[currentQuestionIndex] = null;
+            userWrongAnswers[currentQuestionIndex] = optionIndex;
+            questionCorrectness[currentQuestionIndex] = false;
+          }
+          break;
+        case 'TrueFalse':
+          // 清除之前选中的样式
+          optionsList.querySelectorAll('.option').forEach(option => {
+            option.classList.remove('selected', 'correct', 'wrong');
+          });
+          // 选中当前选项
+          if (isCorrect) {
+            selectedOption.classList.add('correct');
+            // 判断题, 只有两个选项, 0为正确, 1为错误
+            userCorrectAnswers[currentQuestionIndex] = optionIndex;
+            userWrongAnswers[currentQuestionIndex] = null;
+            questionCorrectness[currentQuestionIndex] = true;
+            // 1秒后自动进入下一题
+            setTimeout(nextQuestion, 1000);
+          } else {
+            selectedOption.classList.add('wrong');
+            userCorrectAnswers[currentQuestionIndex] = null;
+            userWrongAnswers[currentQuestionIndex] = optionIndex;
+            questionCorrectness[currentQuestionIndex] = false;
+          }
+          break;
+        case 'MultipleChoice':
+          // 多选题, 允许选择多个选项
+          if (userCorrectAnswers[currentQuestionIndex] === null) {
+            userCorrectAnswers[currentQuestionIndex] = [];
+          }
+          if (userWrongAnswers[currentQuestionIndex] === null) {
+            userWrongAnswers[currentQuestionIndex] = [];
+          }
+          if (userCorrectAnswers[currentQuestionIndex].includes(optionIndex)) {
+            // 如果已经选择, 则取消选择
+            userCorrectAnswers[currentQuestionIndex] = userCorrectAnswers[currentQuestionIndex].filter(index => index !== optionIndex);
+            selectedOption.classList.remove('selected', 'correct', 'wrong');
+          } else if (userWrongAnswers[currentQuestionIndex].includes(optionIndex)) {
+            userWrongAnswers[currentQuestionIndex] = userWrongAnswers[currentQuestionIndex].filter(index => index !== optionIndex);
+            selectedOption.classList.remove('selected', 'correct', 'wrong');
+          } else {
+            // 选中当前选项
+            if (isCorrect) {
+              selectedOption.classList.add('correct');
+              // 如果未选择, 则添加到答案中
+              userCorrectAnswers[currentQuestionIndex].push(optionIndex);
+            } else {
+              selectedOption.classList.add('wrong');
+              userWrongAnswers[currentQuestionIndex].push(optionIndex);
+            }
+          }
+          // 判断 userWrongAnswers 是否为空, 且 userCorrectAnswers 的长度等于 correctAnswersCount
+          if (userWrongAnswers[currentQuestionIndex].length === 0 && userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
+            questionCorrectness[currentQuestionIndex] = true;
+            // 1秒后自动进入下一题
+            setTimeout(nextQuestion, 1000);
+          } else {
+            questionCorrectness[currentQuestionIndex] = false;
+          }
+          break;
+      }
+    }
+
+    function previousQuestion() {
+      // 处理上一题的逻辑
+      if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          updateQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      // 处理下一题的逻辑
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        updateQuestion();
+      }
+    }
+
+    function showQuestionSelector() {
+      // 显示选题弹窗的逻辑
+      const selector = document.getElementById('questionSelector');
+      selector.innerHTML = '';
+      questions.forEach((question, index) => {
+        const div = document.createElement('div');
+        div.className = 'question-num cursor-pointer text-center p-2 border border-gray-300 rounded-md';
+        div.textContent = index + 1;
+        // 根据 questionCorrectness 设置样式
+        if (questionCorrectness[index] === true) {
+          div.classList.add('bg-green-200');
+        } else if (questionCorrectness[index] === false) {
+          div.classList.add('bg-red-200');
+        } else {
+          div.classList.add('bg-gray-100');
+        }
+        div.onclick = () => {
+          currentQuestionIndex = index;
+          updateQuestion();
+          closeModal();
+        };
+        selector.appendChild(div);
+      });
+      document.getElementById('questionModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      // 关闭选题弹窗的逻辑
+      document.getElementById('questionModal').classList.add('hidden');
+    }
+
+    function updateQuestion() {
+      correctAnswersCount = 0;
+      const currentQuestion = questions[currentQuestionIndex];
+      // 更新当前题目的逻辑
+      document.getElementById('questionNum').innerText = `第 ${currentQuestionIndex + 1} 题 / 共 ${questions.length} 题`;
+      // 使用 fields 获取题目文本
+      document.getElementById('questionText').innerText = currentQuestion.fields.text;
+      // 动态设置题型
+      const questionTypeElement = document.getElementById('questionType');
+      // 题型映射
+      const questionTypeMap = {
+        'SingleChoice': '单选题',
+        'TrueFalse': '判断题',
+        'MultipleChoice': '多选题',
+      };
+      // 设置题型文本
+      questionTypeElement.innerText = questionTypeMap[currentQuestion.fields.question_type] || '未知题型';
+      // 清空选项
+      optionsList.innerHTML = '';
+      // 根据题目类型渲染不同的选项
+      switch (currentQuestion.fields.question_type) {
+        case 'SingleChoice':
+          // 单选题
+          addOption(currentQuestion.fields.option_a, 'A', currentQuestion.fields.a_correct, 0);
+          addOption(currentQuestion.fields.option_b, 'B', currentQuestion.fields.b_correct, 1);
+          addOption(currentQuestion.fields.option_c, 'C', currentQuestion.fields.c_correct, 2);
+          addOption(currentQuestion.fields.option_d, 'D', currentQuestion.fields.d_correct, 3);
+          addOption(currentQuestion.fields.option_e, 'E', currentQuestion.fields.e_correct, 4);
+          addOption(currentQuestion.fields.option_f, 'F', currentQuestion.fields.f_correct, 5);
+          correctAnswersCount = 1;
+          break;
+        case 'TrueFalse':
+          // 判断题
+          addOption('正确', null, currentQuestion.fields.is_correct, 0);
+          addOption('错误', null, !currentQuestion.fields.is_correct, 1);
+          correctAnswersCount = 1;
+          break;
+        case 'MultipleChoice':
+          // 多选题
+          addOption(currentQuestion.fields.option_a, 'A', currentQuestion.fields.a_correct, 0);
+          addOption(currentQuestion.fields.option_b, 'B', currentQuestion.fields.b_correct, 1);
+          addOption(currentQuestion.fields.option_c, 'C', currentQuestion.fields.c_correct, 2);
+          addOption(currentQuestion.fields.option_d, 'D', currentQuestion.fields.d_correct, 3);
+          addOption(currentQuestion.fields.option_e, 'E', currentQuestion.fields.e_correct, 4);
+          addOption(currentQuestion.fields.option_f, 'F', currentQuestion.fields.f_correct, 5);
+          if (currentQuestion.fields.a_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.b_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.c_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.d_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.e_correct) {
+            correctAnswersCount++;
+          }
+          if (currentQuestion.fields.f_correct) {
+            correctAnswersCount++;
+          }
+          break;
+        default:
+          optionsList.innerHTML = '<li>未知题型的答案选项</li>';
+          break;
+      }
+    }
+
+    function addOption(optionText, prefix, isCorrect, optionIndex) {
+      // 只添加非空选项
+      if (optionText) {
+        const optionsList = document.getElementById('optionsList');
+        const li = document.createElement('li');
+        li.className = 'option bg-white p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100';
+        li.innerText = prefix ? `${prefix}: ${optionText}` : optionText;
+        // 根据 isCorrect 设置选项的样式
+        if (isCorrect) {
+          // 添加一个数据属性来标识正确答案
+          li.dataset.correct = true;
+          // 可以添加样式以突出显示正确答案
+          li.classList.add('correct-option');
+        }
+        li.onclick = () => selectOption(optionIndex);
+        optionsList.appendChild(li);
+        switch (questions[currentQuestionIndex].fields.question_type) {
+          case 'SingleChoice':
+            // 如果用户之前选择过该选项, 更新样式
+            if (userCorrectAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('correct');
+            } else if (userWrongAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('wrong');
+            }
+            break;
+          case 'TrueFalse':
+            // 如果用户之前选择过该选项, 更新样式
+            if (userCorrectAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('correct');
+            } else if (userWrongAnswers[currentQuestionIndex] === optionIndex) {
+              li.classList.add('wrong');
+            }
+            break;
+          case 'MultipleChoice':
+            if (userCorrectAnswers[currentQuestionIndex] && userCorrectAnswers[currentQuestionIndex].includes(optionIndex)) {
+              li.classList.add('correct');
+            } else if (userWrongAnswers[currentQuestionIndex] && userWrongAnswers[currentQuestionIndex].includes(optionIndex)) {
+              li.classList.add('wrong');
+            }
+            break;
+        }
+      }
+    }
+
+    window.onload = function() {
+      // 页面加载时调用
+      updateQuestion();
+    };
   </script>
 
 </body>
