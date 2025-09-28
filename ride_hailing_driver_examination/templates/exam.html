@@ -6,6 +6,38 @@
   <title>模拟考试 - 网络预约出租车驾驶员培训系统</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 选项基类 JS 会增加 correct/wrong/selected */
+    .option {
+      padding: 12px;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .option.selected {
+      /* 选中时的边框颜色 */
+      border-color: #4f46e5;
+      /* 选中时的背景颜色 */
+      background: #f8f9ff;
+    }
+    .option.correct {
+      /* 正确答案的边框颜色 */
+      border-color: #16a34a;
+      /* 正确答案的背景颜色 */
+      background: #dff7ea;
+      /* 正确答案的文字颜色 */
+      color: #166534;
+    }
+    .option.wrong {
+      /* 错误答案的边框颜色 */
+      border-color: #ef4444;
+      /* 错误答案的背景颜色 */
+      background: #fff2f2;
+      /* 错误答案的文字颜色 */
+      color: #b91c1c;
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
   <div class="container mx-auto max-w-3xl bg-white min-h-screen relative shadow-xl">
@@ -15,9 +47,33 @@
       <h1 class="text-lg font-semibold">模拟考试</h1>
     </div>
 
+    <div class="question-container bg-white rounded-xl p-5 m-5 shadow-md">
+
+      <div class="question-header flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+        <span class="question-number text-indigo-600 font-semibold" id="questionNum">第 0 题 / 共 0 题</span>
+        <span class="question-type bg-indigo-600 text-white px-3 py-1 rounded-full text-xs" id="questionType">题型</span>
+      </div>
+
+      <div class="question-text text-gray-800 text-base leading-relaxed mb-4" id="questionText">问题描述</div>
+
+      <ul class="options space-y-3" id="optionsList">答案选项</ul>
+
+    </div>
+
   </div>
 
   <script>
+    // 当前问题索引
+    let currentQuestionIndex = 0;
+    // 当前问题的正确答案数量
+    let correctAnswersCount = 0
+    // 从后端传递的题目数据
+    const questions = JSON.parse('{{ questions|safe }}');
+    // 用户答案数组，初始化为与问题数量相同的长度
+    const userCorrectAnswers = new Array(questions.length).fill(null);
+    const userWrongAnswers = new Array(questions.length).fill(null);
+    // 数组记录每道题的正确性
+    const questionCorrectness = new Array(questions.length).fill(null);
   </script>
 
 </body>
