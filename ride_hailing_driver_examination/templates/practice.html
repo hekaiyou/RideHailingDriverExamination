@@ -352,9 +352,9 @@
             }
             break;
           case 'MultipleChoice':
-            if (userCorrectAnswers[currentQuestionIndex].includes(optionIndex)) {
+            if (userCorrectAnswers[currentQuestionIndex] && userCorrectAnswers[currentQuestionIndex].includes(optionIndex)) {
               li.classList.add('correct');
-            } else if (userWrongAnswers[currentQuestionIndex].includes(optionIndex)) {
+            } else if (userWrongAnswers[currentQuestionIndex] && userWrongAnswers[currentQuestionIndex].includes(optionIndex)) {
               li.classList.add('wrong');
             }
             break;
