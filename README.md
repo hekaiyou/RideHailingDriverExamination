@@ -1,3 +1,6 @@
+```shell
+% pip3 install Django
+```
 
 ```shell
 % django-admin startproject ride_hailing_driver_examination
@@ -24,4 +27,5 @@
 ```shell
 % cd ride_hailing_driver_examination
 % python3 manage.py runserver
+% python3 manage.py runserver 0.0.0.0:10081
 ```
