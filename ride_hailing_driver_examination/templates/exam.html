@@ -158,6 +158,7 @@
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
             questionCorrectness[currentQuestionIndex] = false;
+            addToWrongQuestions(currentQuestion.pk);
           }
           break;
         case 'TrueFalse':
@@ -179,6 +180,7 @@
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
             questionCorrectness[currentQuestionIndex] = false;
+            addToWrongQuestions(currentQuestion.pk);
           }
           break;
         case 'MultipleChoice':
@@ -214,6 +216,9 @@
             setTimeout(nextQuestion, 1000);
           } else {
             questionCorrectness[currentQuestionIndex] = false;
+            if (userWrongAnswers[currentQuestionIndex].length + userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
+              addToWrongQuestions(currentQuestion.pk);
+            }
           }
           break;
       }
@@ -449,6 +454,31 @@
           submitExam(false);
         }
       }, 1000);
+    }
+
+    function addToWrongQuestions(questionId) {
+      // 获取 CSRF 令牌
+      const csrfToken = '{{ csrf_token }}';
+      fetch(`/api/wrong-questions/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ question_id: questionId })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('网络错误');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('错题已添加:', data);
+      })
+      .catch(error => {
+        console.error('添加错题失败:', error);
+      });
     }
 
     window.onload = function() {
