@@ -10,6 +10,10 @@ from .models import Student, Course, Question, WrongAnswer
 from .serializers import serialize_questions
 
 
+def root_redirect(request):
+    return redirect('home')
+
+
 def login_view(request):
     if request.method == 'POST':
         id_card = request.POST['id_card']

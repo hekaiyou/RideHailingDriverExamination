@@ -19,6 +19,9 @@ from django.urls import path
 from my_app import views
 
 urlpatterns = [
+    # 根路径重定向
+    path('', views.root_redirect, name='root'),
+    # 管理员站点
     path('admin/', admin.site.urls),
     # 登录视图
     path('login/', views.login_view, name='login'),
