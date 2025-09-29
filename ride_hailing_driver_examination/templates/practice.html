@@ -101,10 +101,10 @@
     // 从后端传递的题目数据
     const questions = JSON.parse('{{ questions|safe }}');
     // 用户答案数组，初始化为与问题数量相同的长度
-    const userCorrectAnswers = new Array(questions.length).fill(null);
-    const userWrongAnswers = new Array(questions.length).fill(null);
+    let userCorrectAnswers = new Array(questions.length).fill(null);
+    let userWrongAnswers = new Array(questions.length).fill(null);
     // 数组记录每道题的正确性
-    const questionCorrectness = new Array(questions.length).fill(null);
+    let questionCorrectness = new Array(questions.length).fill(null);
 
     function selectOption(optionIndex) {
       // 处理选项选择逻辑
