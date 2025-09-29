@@ -235,9 +235,9 @@
 
     function redoQuestion() {
       // 重做当前题目的逻辑
-      userCorrectAnswers[currentQuestionIndex] = null;
-      userWrongAnswers[currentQuestionIndex] = null;
-      questionCorrectness[currentQuestionIndex] = null;
+      userCorrectAnswers = new Array(questions.length).fill(null);
+      userWrongAnswers = new Array(questions.length).fill(null);
+      questionCorrectness = new Array(questions.length).fill(null);
       updateQuestion();
     }
 
