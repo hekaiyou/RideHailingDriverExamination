@@ -51,6 +51,26 @@
       color: red;
       font-weight: bold;
     }
+    /* 答案解析样式 */
+    .explanation {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #f0f9ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0.375rem;
+    }
+    .explanation.show {
+      display: block;
+    }
+    .explanation-title {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+    }
+    .explanation-content {
+      color: #374151;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 font-sans antialiased">
@@ -73,6 +93,14 @@
       <div class="question-text text-gray-800 text-base leading-relaxed mb-4" id="questionText">问题描述</div>
 
       <ul class="options space-y-3" id="optionsList">答案选项</ul>
+
+      <!-- 答案解析区域 -->
+      <div id="explanation" class="explanation">
+        <div class="explanation-title">答案解析:</div>
+        <div class="explanation-content" id="explanationText">
+          本题考察的是网络预约出租汽车驾驶员的相关知识。请仔细阅读题目并选择正确答案。
+        </div>
+      </div>
 
     </div>
 
@@ -169,6 +197,8 @@
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
             questionCorrectness[currentQuestionIndex] = true;
+            // 隐藏答案解析
+            hideExplanation();
             // 0.5 秒后自动进入下一题
             setTimeout(nextQuestion, 500);
           } else {
@@ -184,6 +214,8 @@
                 option.classList.add('wrong');
               }
             });
+            // 显示答案解析
+            showExplanation();
             addToWrongQuestions(currentQuestion.pk);
           }
           break;
@@ -203,6 +235,8 @@
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
             questionCorrectness[currentQuestionIndex] = true;
+            // 隐藏答案解析
+            hideExplanation();
             // 0.5 秒后自动进入下一题
             setTimeout(nextQuestion, 500);
           } else {
@@ -218,6 +252,8 @@
                 option.classList.add('wrong');
               }
             });
+            // 显示答案解析
+            showExplanation();
             addToWrongQuestions(currentQuestion.pk);
           }
           break;
@@ -254,6 +290,8 @@
             optionsList.querySelectorAll('.option').forEach(option => {
               option.onclick = null;
             });
+            // 隐藏答案解析
+            hideExplanation();
             // 0.5 秒后自动进入下一题
             setTimeout(nextQuestion, 500);
           } else {
@@ -271,6 +309,8 @@
                   option.classList.add('wrong');
                 }
               });
+              // 显示答案解析
+              showExplanation();
               addToWrongQuestions(currentQuestion.pk);
             }
           }
@@ -393,6 +433,8 @@
           optionsList.innerHTML = '<li>未知题型的答案选项</li>';
           break;
       }
+      // 隐藏答案解析
+      hideExplanation();
       // 判断当前题目是否已被回答
       if (questionCorrectness[currentQuestionIndex] !== null) {
         // 已被回答, 禁用所有选项点击
@@ -409,6 +451,8 @@
               option.classList.add('wrong');
             }
           });
+          // 显示答案解析
+          showExplanation();
         }
       }
     }
@@ -551,6 +595,18 @@
       .catch(error => {
         console.error('添加错题失败:', error);
       });
+    }
+
+    function showExplanation() {
+      // 显示答案解析
+      const explanation = document.getElementById('explanation');
+      explanation.classList.add('show');
+    }
+
+    function hideExplanation() {
+      // 隐藏答案解析
+      const explanation = document.getElementById('explanation');
+      explanation.classList.remove('show');
     }
 
     window.onload = function() {
