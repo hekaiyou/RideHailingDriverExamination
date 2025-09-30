@@ -417,6 +417,21 @@
           optionsList.innerHTML = '<li>未知题型的答案选项</li>';
           break;
       }
+      // 判断当前题目是否已被回答
+      if (questionCorrectness[currentQuestionIndex] !== null) {
+        // 已被回答, 禁用所有选项点击
+        optionsList.querySelectorAll('.option').forEach(option => {
+          option.onclick = null;
+        });
+        // 将当前题目的正确选项添加 correct 样式
+        optionsList.querySelectorAll('.option').forEach(option => {
+          if (option.classList.contains('correct-option')) {
+            option.classList.add('correct');
+          } else {
+            option.classList.add('wrong');
+          }
+        });
+      }
     }
 
     function addOption(optionText, prefix, isCorrect, optionIndex) {
