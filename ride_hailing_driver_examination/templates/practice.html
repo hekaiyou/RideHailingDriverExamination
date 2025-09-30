@@ -542,6 +542,42 @@
     function showExplanation() {
       // 显示答案解析
       const explanation = document.getElementById('explanation');
+      const explanationText = document.getElementById('explanationText');
+      // 获取当前题目
+      const currentQuestion = questions[currentQuestionIndex];
+      const questionType = currentQuestion.fields.question_type;
+      // 根据题目类型构建答案解析文本
+      let answerText = '';
+      switch (questionType) {
+        case 'SingleChoice':
+          // 单选题: 找出正确答案的选项
+          if (currentQuestion.fields.a_correct) answerText = 'A';
+          else if (currentQuestion.fields.b_correct) answerText = 'B';
+          else if (currentQuestion.fields.c_correct) answerText = 'C';
+          else if (currentQuestion.fields.d_correct) answerText = 'D';
+          else if (currentQuestion.fields.e_correct) answerText = 'E';
+          else if (currentQuestion.fields.f_correct) answerText = 'F';
+          break;
+        case 'TrueFalse':
+          // 判断题: 根据 is_correct 显示
+          answerText = currentQuestion.fields.is_correct ? '正确' : '错误';
+          break;
+        case 'MultipleChoice':
+          // 多选题: 收集所有正确答案的选项
+          const correctOptions = [];
+          if (currentQuestion.fields.a_correct) correctOptions.push('A');
+          if (currentQuestion.fields.b_correct) correctOptions.push('B');
+          if (currentQuestion.fields.c_correct) correctOptions.push('C');
+          if (currentQuestion.fields.d_correct) correctOptions.push('D');
+          if (currentQuestion.fields.e_correct) correctOptions.push('E');
+          if (currentQuestion.fields.f_correct) correctOptions.push('F');
+          answerText = correctOptions.join('、');
+          break;
+        default:
+          answerText = '未知题型';
+      }
+      // 设置解析文本
+      explanationText.textContent = `正确答案是 “${answerText}”`;
       explanation.classList.add('show');
     }
 
