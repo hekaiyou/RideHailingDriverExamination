@@ -239,6 +239,31 @@
       const selector = document.getElementById('questionSelector');
       selector.innerHTML = '';
       questions.forEach((question, index) => {
+        // 检查题目正确性的逻辑
+        switch (question.fields.question_type) {
+          case 'SingleChoice':
+            // 如果是单选题, question.fields.is_correct 应该为 false, 
+            if (question.fields.is_correct !== false) {
+              console.log(`单选题 ${question.pk} 中, 不应该设置 (判断题的) 正确答案`);
+            }
+            // 如果是单选题, question.fields.option_a、b、c、d、e、f 中至少有一个选项不为空字符串
+            if (question.fields.option_a === '' && question.fields.option_b === '' && question.fields.option_c === '' && question.fields.option_d === '' && question.fields.option_e === '' && question.fields.option_f === '') {
+              console.log(`单选题 ${question.pk} 中, 选项 A、B、C、D、E、F 不能全为空`);
+            }  
+            // 如果是单选题, a、b、c、d、e、f_correct 中, true 的数量只能有一个
+            if ([question.fields.a_correct, question.fields.b_correct, question.fields.c_correct, question.fields.d_correct, question.fields.e_correct, question.fields.f_correct].filter(Boolean).length !== 1) {
+              console.log(`单选题 ${question.pk} 中, (选择题的) 正确答案只能有一个`);
+            }
+            break;
+          case 'TrueFalse':
+            // 如果是判断题, 只有 question.fields.option_a、b、c、d、e、f 都应该是空字符串
+            if (question.fields.option_a !== '' || question.fields.option_b !== '' || question.fields.option_c !== '' || question.fields.option_d !== '' || question.fields.option_e !== '' || question.fields.option_f !== '') {
+              console.log(`判断题 ${question.pk} 中, 不能包含选项 A、B、C、D、E、F 的内容`);
+            }
+            break;
+          case 'MultipleChoice':
+            break;
+        }
         const div = document.createElement('div');
         div.className = 'question-num cursor-pointer text-center p-2 border border-gray-300 rounded-md';
         div.textContent = index + 1;
