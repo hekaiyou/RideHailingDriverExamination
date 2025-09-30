@@ -357,14 +357,17 @@
         optionsList.querySelectorAll('.option').forEach(option => {
           option.onclick = null;
         });
-        // 将当前题目的正确选项添加 correct 样式
-        optionsList.querySelectorAll('.option').forEach(option => {
-          if (option.classList.contains('correct-option')) {
-            option.classList.add('correct');
-          } else {
-            option.classList.add('wrong');
-          }
-        });
+        // 如果结果不正确
+        if (questionCorrectness[currentQuestionIndex] === false) {
+          // 将当前题目的正确选项添加 correct 样式
+          optionsList.querySelectorAll('.option').forEach(option => {
+            if (option.classList.contains('correct-option')) {
+              option.classList.add('correct');
+            } else {
+              option.classList.add('wrong');
+            }
+          });
+        }
       }
     }
 
