@@ -117,6 +117,10 @@
       // 根据题目类型处理选项
       switch (currentQuestion.fields.question_type) {
         case 'SingleChoice':
+          // 禁用所有选项点击
+          optionsList.querySelectorAll('.option').forEach(option => {
+            option.onclick = null;
+          });
           // 清除之前选中的样式
           optionsList.querySelectorAll('.option').forEach(option => {
             option.classList.remove('selected', 'correct', 'wrong');
@@ -128,17 +132,29 @@
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
             questionCorrectness[currentQuestionIndex] = true;
-            // 1秒后自动进入下一题
-            setTimeout(nextQuestion, 1000);
+            // 0.5 秒后自动进入下一题
+            setTimeout(nextQuestion, 500);
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
             questionCorrectness[currentQuestionIndex] = false;
+            // 将当前题目的正确选项添加 correct 样式
+            optionsList.querySelectorAll('.option').forEach(option => {
+              if (option.classList.contains('correct-option')) {
+                option.classList.add('correct');
+              } else {
+                option.classList.add('wrong');
+              }
+            });
             addToWrongQuestions(currentQuestion.pk);
           }
           break;
         case 'TrueFalse':
+          // 禁用所有选项点击
+          optionsList.querySelectorAll('.option').forEach(option => {
+            option.onclick = null;
+          });
           // 清除之前选中的样式
           optionsList.querySelectorAll('.option').forEach(option => {
             option.classList.remove('selected', 'correct', 'wrong');
@@ -150,13 +166,21 @@
             userCorrectAnswers[currentQuestionIndex] = optionIndex;
             userWrongAnswers[currentQuestionIndex] = null;
             questionCorrectness[currentQuestionIndex] = true;
-            // 1秒后自动进入下一题
-            setTimeout(nextQuestion, 1000);
+            // 0.5 秒后自动进入下一题
+            setTimeout(nextQuestion, 500);
           } else {
             selectedOption.classList.add('wrong');
             userCorrectAnswers[currentQuestionIndex] = null;
             userWrongAnswers[currentQuestionIndex] = optionIndex;
             questionCorrectness[currentQuestionIndex] = false;
+            // 将当前题目的正确选项添加 correct 样式
+            optionsList.querySelectorAll('.option').forEach(option => {
+              if (option.classList.contains('correct-option')) {
+                option.classList.add('correct');
+              } else {
+                option.classList.add('wrong');
+              }
+            });
             addToWrongQuestions(currentQuestion.pk);
           }
           break;
@@ -189,11 +213,27 @@
           // 判断 userWrongAnswers 是否为空, 且 userCorrectAnswers 的长度等于 correctAnswersCount
           if (userWrongAnswers[currentQuestionIndex].length === 0 && userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
             questionCorrectness[currentQuestionIndex] = true;
-            // 1秒后自动进入下一题
-            setTimeout(nextQuestion, 1000);
+            // 禁用所有选项点击
+            optionsList.querySelectorAll('.option').forEach(option => {
+              option.onclick = null;
+            });
+            // 0.5 秒后自动进入下一题
+            setTimeout(nextQuestion, 500);
           } else {
             questionCorrectness[currentQuestionIndex] = false;
             if (userWrongAnswers[currentQuestionIndex].length + userCorrectAnswers[currentQuestionIndex].length === correctAnswersCount) {
+              // 禁用所有选项点击
+              optionsList.querySelectorAll('.option').forEach(option => {
+                option.onclick = null;
+              });
+              // 将当前题目的正确选项添加 correct 样式
+              optionsList.querySelectorAll('.option').forEach(option => {
+                if (option.classList.contains('correct-option')) {
+                  option.classList.add('correct');
+                } else {
+                  option.classList.add('wrong');
+                }
+              });
               addToWrongQuestions(currentQuestion.pk);
             }
           }
