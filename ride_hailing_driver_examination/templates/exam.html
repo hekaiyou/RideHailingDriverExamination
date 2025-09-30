@@ -14,6 +14,8 @@
       border-radius: 8px;
       cursor: pointer;
       transition: all .2s;
+      display: flex;
+      align-items: center;
     }
     .option.selected {
       /* 选中时的边框颜色 */
@@ -36,6 +38,18 @@
       background: #fff2f2;
       /* 错误答案的文字颜色 */
       color: #b91c1c;
+    }
+    .option.correct::before {
+      content: "✓";
+      margin-right: 8px;
+      color: green;
+      font-weight: bold;
+    }
+    .option.wrong::before {
+      content: "✗";
+      margin-right: 8px;
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
