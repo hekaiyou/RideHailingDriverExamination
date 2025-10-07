@@ -91,7 +91,7 @@ def practice_view(request, course_id):
     # 获取课程下所有题目
     questions = list(course.questions.all())
     # 随机化题目顺序
-    random.shuffle(questions)
+    # random.shuffle(questions)
     # 使用序列化器将问题转换为 JSON 格式
     questions_json = serialize_questions(questions)
     context = {
@@ -151,7 +151,7 @@ def wrong_questions_view(request, course_id):
     # 获取全部错题对应的题目
     questions = [wrong_answer.question for wrong_answer in wrong_answers]
     # 随机化题目顺序
-    random.shuffle(questions)
+    # random.shuffle(questions)
     # 使用序列化器将问题转换为 JSON 格式
     questions_json = serialize_questions(questions)
     context = {
