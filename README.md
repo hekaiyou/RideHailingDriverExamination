@@ -1,6 +1,12 @@
+## 开发流程
+
+依赖安装:
+
 ```shell
 % pip3 install Django
 ```
+
+项目创建:
 
 ```shell
 % django-admin startproject ride_hailing_driver_examination
@@ -8,12 +14,16 @@
 % django-admin startapp my_app
 ```
 
+数据库配置:
+
 ```shell
 % cd ride_hailing_driver_examination
 % python3 manage.py makemigrations
 % python3 manage.py makemigrations my_app
 % python3 manage.py migrate
 ```
+
+管理员创建:
 
 ```shell
 % cd ride_hailing_driver_examination
@@ -24,8 +34,12 @@
 % Password (again): *********
 ```
 
+启动服务:
+
 ```shell
 % cd ride_hailing_driver_examination
+# 使用默认IP和端口
 % python3 manage.py runserver
+# 使用自定义IP和端口
 % python3 manage.py runserver 0.0.0.0:10081
 ```
