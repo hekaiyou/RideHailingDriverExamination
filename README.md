@@ -38,10 +38,7 @@
 
 ```shell
 % cd ride_hailing_driver_examination
-# 使用默认IP和端口
 % python3 manage.py runserver
-# 使用自定义IP和端口
-% python3 manage.py runserver 0.0.0.0:10081
 ```
 
 ## 安全设置
@@ -59,3 +56,26 @@ ride_hailing_driver_examination\ride_hailing_driver_examination\settings.py
 ```python
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'example.com', 'www.example.com']
 ```
+
+## 快速部署
+
+创建名为 `rhde` 的 **Linux screen** 视窗:
+
+```shell
+% screen -S rhde
+```
+
+在 **Linux screen** 视窗中启动服务:
+
+```shell
+% cd ride_hailing_driver_examination
+% python3 manage.py runserver 0.0.0.0:10081
+```
+
+通过 *Ctrl+A -> Ctrl+D* 退出当前视窗, 下次可以通过命令回到名为 rhde 的视窗:
+
+```shell
+% screen -r rhde
+```
+
+取消部署时, 先进入视窗再通过 *Ctrl+D* 删除当前视窗。
