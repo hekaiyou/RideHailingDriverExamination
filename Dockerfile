@@ -9,11 +9,7 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 # 安装 Python 依赖
 RUN pip install --user --no-cache-dir -r requirements.txt
-# 创建非 root 用户
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-# 切换到非 root 用户
-USER appuser
 # 数据库目录权限
-RUN mkdir -p /app/data && chmod 755 /app/data
+RUN mkdir -p /app/data && chmod 777 /app/data
 # 使用 Gunicorn 作为 WSGI 服务器
 CMD ["gunicorn", "--bind", "0.0.0.0:10081", "--workers", "3", "ride_hailing_driver_examination.ride_hailing_driver_examination.wsgi:application"]
