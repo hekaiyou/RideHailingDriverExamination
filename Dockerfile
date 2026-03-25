@@ -16,4 +16,4 @@ USER appuser
 # 数据库目录权限
 RUN mkdir -p /app/data && chmod 755 /app/data
 # 使用 Gunicorn 作为 WSGI 服务器
-CMD ["gunicorn", "--bind", "0.0.0.0:10081", "--workers", "3", "ride_hailing_driver_examination.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10081", "--workers", "3", "ride_hailing_driver_examination.ride_hailing_driver_examination.wsgi:application"]
