@@ -11,9 +11,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 # 数据库目录权限
 RUN mkdir -p /app/data && chmod 777 /app/data
-# 设置环境变量
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    DJANGO_SETTINGS_MODULE=ride_hailing_driver_examination.ride_hailing_driver_examination.settings
+# 进入项目目录
+RUN cd ride_hailing_driver_examination
 # 使用 Gunicorn 作为 WSGI 服务器
-CMD ["gunicorn", "--bind", "0.0.0.0:10081", "--workers", "3", "ride_hailing_driver_examination.ride_hailing_driver_examination.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10081", "--workers", "3", "ride_hailing_driver_examination.wsgi:application"]
