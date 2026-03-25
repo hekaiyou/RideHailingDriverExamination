@@ -72,6 +72,13 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'example.com', 'www.exampl
 % python3 manage.py runserver 0.0.0.0:10081
 ```
 
+或者可以通过 **Gunicorn** 启动服务, 以获得更好的性能:
+
+```shell
+% cd ride_hailing_driver_examination
+% gunicorn --bind 0.0.0.0:10081 --workers 3 ride_hailing_driver_examination.wsgi:application
+```
+
 通过 *Ctrl+A -> Ctrl+D* 退出当前视窗, 下次可以通过命令回到名为 rhde 的视窗:
 
 ```shell
